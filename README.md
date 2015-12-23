@@ -1,3 +1,7 @@
+Welcome to project FundFlow!
+============================
+Project FundFlow is a fund flow management tool built on Android platform.
+
 Feature List
 =============
 1.  Outline
