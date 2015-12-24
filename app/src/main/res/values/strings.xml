@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Funds Flow</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_account">Account Management</string>
+    <string name="action_tag">Tag Management</string>
+    <string name="action_budget">Budget</string>
+    <string name="action_statistic">Statistic</string>
+    <string name="action_settings">Settings</string>
+</resources>
