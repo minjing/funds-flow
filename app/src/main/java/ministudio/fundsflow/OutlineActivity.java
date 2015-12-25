@@ -1,5 +1,6 @@
 package ministudio.fundsflow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -83,6 +84,7 @@ public class OutlineActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_account:
                 // Open account management activate
+                startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                 final Snackbar snackbar = Snackbar.make(this.findViewById(R.id.nav_view), "Open Account Management Activate", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Ignore", new View.OnClickListener() {
                     @Override

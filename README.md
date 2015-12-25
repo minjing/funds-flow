@@ -29,6 +29,7 @@ Basic Version Feature List
     -   [ ] Monthly Statistic
         -   [ ] Income / Expense Ratio
         -   [ ] Tag based Expense Ratio
+        -   [ ] Tag based Income Ratio
 1.  Settings
     -   [ ] Currency Selection
     -   [ ] Color Schema Selection (Light and Dark)
