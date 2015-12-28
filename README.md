@@ -34,6 +34,7 @@ Basic Version Feature List
     -   [ ] Currency Selection
     -   [ ] Color Schema Selection (Light and Dark)
     -   [ ] Upgrade to Advanced Version
+    -   [ ] Bug Report / Feature Request
     -   [ ] About
 
 Advanced Version Feature List
