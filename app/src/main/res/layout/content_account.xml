@@ -12,4 +12,16 @@
     tools:context="ministudio.fundsflow.AccountActivity"
     tools:showIn="@layout/activity_account">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/account_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/account_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@android:layout/simple_list_item_1">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

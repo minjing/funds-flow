@@ -15,7 +15,7 @@ import ministudio.fundsflow.domain.Account;
  */
 public class SQLitePersistence extends SQLiteOpenHelper {
 
-    private static final String dbName  = "fundsflow";
+    private static final String dbName  = "fundsflow.db";
     private static final int dbVersion  = 1;
     private static final IPersistenceInitializer[] persistenceInitializers;
 
@@ -33,8 +33,10 @@ public class SQLitePersistence extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         try {
             for (IPersistenceInitializer initializer : persistenceInitializers) {
-                String stmt = initializer.getCreateStatement();
-                sqLiteDatabase.execSQL(stmt);
+                String[] stmts = initializer.getCreateStatement();
+                for (String stmt : stmts) {
+                    sqLiteDatabase.execSQL(stmt);
+                }
             }
         } catch (SQLException ex) {
             throw new IllegalStateException(ex);
@@ -47,11 +49,13 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         for (int v = oldVersion; v < newVersion; v++) {
             try {
                 for (IPersistenceInitializer initializer : persistenceInitializers) {
-                    String stmt = initializer.getUpgradeStatement(v, v + 1);
-                    if (Strings.isNullOrEmpty(stmt)) {
+                    String[] stmts = initializer.getUpgradeStatement(v, v + 1);
+                    if (stmts == null || stmts.length == 0) {
                         continue;
                     }
-                    sqLiteDatabase.execSQL(stmt);
+                    for (String stmt : stmts) {
+                        sqLiteDatabase.execSQL(stmt);
+                    }
                 }
             } catch (SQLException ex) {
                 throw new IllegalStateException(ex);

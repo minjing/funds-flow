@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ministudio.fundsflow.IPersistenceInitializer;
-import ministudio.fundsflow.SQLitePersistence;
 
 /**
  * Created by min on 15/12/25.
@@ -30,49 +29,43 @@ public class Account {
         private static final String STMT_DROP_TABLE  = "drop table if exist account";
 
         @Override
-        public String getCreateStatement() {
-            return STMT_CREATE_TABLE;
+        public String[] getCreateStatement() {
+            return new String[] { STMT_CREATE_TABLE };
         }
 
         @Override
-        public String getUpgradeStatement(int oldVersion, int newVersion) {
-            return null;
+        public String[] getUpgradeStatement(int oldVersion, int newVersion) {
+            return new String[] { STMT_DROP_TABLE, STMT_CREATE_TABLE };
         }
     }
 
     private static final String TAB_COL_ID      = "id";
     private static final String TAB_COL_NAME    = "name";
 
-    public static Account getAccount(SQLitePersistence persistence, int accountId) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - persistence");
+    public static Account getAccount(SQLiteDatabase db, int accountId) {
+        if (db == null) {
+            throw new IllegalArgumentException("The argument is required - db");
         }
-        String stmt = "SELECT id, name FROM accont WHERE id = ?";
-        SQLiteDatabase db = persistence.getReadableDatabase();
+        String stmt = "select id, name from accont where id = ?";
         Cursor cursor = db.rawQuery(stmt, new String[] { String.valueOf(accountId) });
         if (cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndex(TAB_COL_ID));
-            String name = cursor.getString(cursor.getColumnIndex(TAB_COL_NAME));
-            return new Account(persistence, id, name);
+            return createAccount(db, cursor);
         } else {
             return null;
         }
     }
 
-    public static List<Account> getAccounts(SQLitePersistence persistence) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - persistence");
+    public static List<Account> getAccounts(SQLiteDatabase db) {
+        if (db == null) {
+            throw new IllegalArgumentException("The argument is required - db");
         }
         String stmt = "SELECT id, name FROM account";
-        SQLiteDatabase db = persistence.getReadableDatabase();
         Cursor cursor = db.rawQuery(stmt, new String[0]);
         List<Account> accounts;
         if (cursor.moveToFirst()) {
             accounts = new ArrayList<>();
             do {
-                int id = cursor.getInt(cursor.getColumnIndex(TAB_COL_ID));
-                String name = cursor.getString(cursor.getColumnIndex(TAB_COL_NAME));
-                accounts.add(new Account(persistence, id, name));
+                accounts.add(createAccount(db, cursor));
             } while (cursor.moveToNext());
         } else {
             accounts = Collections.emptyList();
@@ -82,30 +75,33 @@ public class Account {
         return accounts;
     }
 
-    private final SQLitePersistence _persistence;
+    private static Account createAccount(SQLiteDatabase db, Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndex(TAB_COL_ID));
+        String name = cursor.getString(cursor.getColumnIndex(TAB_COL_NAME));
+        return new Account(db, id, name);
+    }
+
+    private static final int UNDEFINED_ID   = -1;
+
+    private final SQLiteDatabase _db;
 
     private int     _id;
     private String  _name = null;
-    private float   _balance = 0;
 
-    public Account(SQLitePersistence persistence, int id, String name) {
-        this(persistence, id, name, 0);
+    public Account(SQLiteDatabase db, String name) {
+        this(db, UNDEFINED_ID, name);
     }
 
-    public Account(SQLitePersistence persistence, int id, String name, float balance) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - persistence");
+    public Account(SQLiteDatabase db, int id, String name) {
+        if (db == null) {
+            throw new IllegalArgumentException("The argument is required - db");
         }
         if (Strings.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("The argument is required - name");
         }
-        if (balance < 0) {
-            throw new IllegalArgumentException("The argument must be more than 0 - balance");
-        }
-        this._persistence = persistence;
+        this._db = db;
         this._id = id;
         this._name = name;
-        this._balance = balance;
     }
 
     public int getId() {
@@ -123,13 +119,15 @@ public class Account {
         return this._name;
     }
 
-    public float getBalance() {
-        return this._balance;
-    }
-
     public void save() {
-//        String stmt = "";
-//        SQLiteDatabase db = this._persistence.getWritableDatabase();
-
+        if (this._id == UNDEFINED_ID) {
+            // create
+            String stmt = "insert into account (name) values ('?')";
+            this._db.execSQL(stmt, new String[] { this._name });
+        } else {
+            // update
+            String stmt  = "update table account (name) values ('?') where id = ?";
+            this._db.execSQL(stmt, new Object[] { this._name, this._id });
+        }
     }
 }

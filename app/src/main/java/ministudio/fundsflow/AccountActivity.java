@@ -3,11 +3,21 @@ package ministudio.fundsflow;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+
+    private ListView accountListView;
+    private SwipeRefreshLayout accountListLayout;
+
+    private ArrayAdapter mAdapter;
+
+    String[] data = { "a", "b", "c" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +25,13 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        accountListView = (ListView) findViewById(R.id.account_list);
+        this.accountListLayout = (SwipeRefreshLayout) findViewById(R.id.account_layout);
+        this.accountListLayout.setOnRefreshListener(this);
+
+        this.mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, data);
+        this.accountListView.setAdapter(this.mAdapter);
 
         FloatingActionButton btnCreateAccount = (FloatingActionButton) findViewById(R.id.create_account);
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
@@ -26,4 +43,8 @@ public class AccountActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onRefresh() {
+
+    }
 }

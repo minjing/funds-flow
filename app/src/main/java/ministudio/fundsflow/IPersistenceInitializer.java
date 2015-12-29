@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public interface IPersistenceInitializer {
 
-    String getCreateStatement();
+    String[] getCreateStatement();
 
-    String getUpgradeStatement(int oldVersion, int newVersion);
+    String[] getUpgradeStatement(int oldVersion, int newVersion);
 }
