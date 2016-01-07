@@ -12,11 +12,13 @@ Basic Version Feature List
     -   [ ] Income / Expense / Transfer
     -   [ ] Tag Selection
 1.  Account Management
-    -   [ ] Account only contains its name
+    -   [ ] Account only contains its name, the name is unique
+    -   [ ] Default Account named Cash
     -   [ ] Create Account
     -   [ ] Modify Account
+        -   [ ] Default Account can be rename
     -   [ ] Delete Account
-    -   [ ] Need to check when changing account value
+        -   [ ] A Default Account can't be Deleted
 1.  Tag Management
     -   [ ] Tag only contains its name
     -   [ ] Create / Modify / Delete Tag
@@ -34,7 +36,11 @@ Basic Version Feature List
     -   [ ] Currency Selection
     -   [ ] Color Schema Selection (Light and Dark)
     -   [ ] Upgrade to Advanced Version
-    -   [ ] Bug Report / Feature Request
+    -   [ ] Bug Report
+        -   [ ] Collect Phone Model
+        -   [ ] Collect Runtime Log
+        -   [ ] User Provide Operation Steps (Optional)
+    -   [ ] Feature Request
     -   [ ] About
 
 Advanced Version Feature List

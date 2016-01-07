@@ -16,8 +16,7 @@ import ministudio.fundsflow.IPersistenceInitializer;
  */
 public class Account {
 
-    public static final IPersistenceInitializer initializer
-            = new AccountInitializer();
+    public static final IPersistenceInitializer initializer = new AccountInitializer();
 
     private static final class AccountInitializer implements IPersistenceInitializer {
 

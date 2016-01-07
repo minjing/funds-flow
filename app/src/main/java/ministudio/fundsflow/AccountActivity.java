@@ -1,6 +1,7 @@
 package ministudio.fundsflow;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -45,6 +46,14 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
 
     @Override
     public void onRefresh() {
-
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                accountListLayout.setRefreshing(false);
+//                ItemInfo info = new ItemInfo();
+//                info.setName("coin-refresh");
+//                infoList.add(info);
+//                adapter.notifyDataSetChanged();
+            }
+        }, 500);
     }
 }
