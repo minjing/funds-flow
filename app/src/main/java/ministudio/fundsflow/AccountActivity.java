@@ -11,14 +11,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
+import ministudio.fundsflow.domain.Account;
+
 public class AccountActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ListView accountListView;
     private SwipeRefreshLayout accountListLayout;
 
-    private ArrayAdapter mAdapter;
-
-    String[] data = { "a", "b", "c" };
+    private SQLitePersistence persistence;
+    private ArrayAdapter accountAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,10 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountListLayout = (SwipeRefreshLayout) findViewById(R.id.account_layout);
         this.accountListLayout.setOnRefreshListener(this);
 
-        this.mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, data);
-        this.accountListView.setAdapter(this.mAdapter);
+        this.persistence = new SQLitePersistence(this);
+        Account[] accounts = Account.getAccounts(persistence.getReadableDatabase());
+        this.accountAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, accounts);
+        this.accountListView.setAdapter(this.accountAdapter);
 
         FloatingActionButton btnCreateAccount = (FloatingActionButton) findViewById(R.id.create_account);
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
@@ -49,10 +54,9 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 accountListLayout.setRefreshing(false);
-//                ItemInfo info = new ItemInfo();
-//                info.setName("coin-refresh");
-//                infoList.add(info);
-//                adapter.notifyDataSetChanged();
+                accountAdapter.clear();
+                accountAdapter.addAll(Account.getAccounts(persistence.getReadableDatabase()));
+                accountAdapter.notifyDataSetChanged();
             }
         }, 500);
     }

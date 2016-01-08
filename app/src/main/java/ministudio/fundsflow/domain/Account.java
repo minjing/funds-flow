@@ -54,7 +54,7 @@ public class Account {
         }
     }
 
-    public static List<Account> getAccounts(SQLiteDatabase db) {
+    public static Account[] getAccounts(SQLiteDatabase db) {
         if (db == null) {
             throw new IllegalArgumentException("The argument is required - db");
         }
@@ -71,7 +71,7 @@ public class Account {
         }
         cursor.close();
         db.close();
-        return accounts;
+        return accounts.toArray(new Account[accounts.size()]);
     }
 
     private static Account createAccount(SQLiteDatabase db, Cursor cursor) {
