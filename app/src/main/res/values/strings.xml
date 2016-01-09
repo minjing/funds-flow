@@ -9,5 +9,6 @@
     <string name="action_budget">Budget</string>
     <string name="action_statistic">Statistic</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_account">Account List</string>
+    <string name="title_activity_account_add">Add Account</string>
 </resources>

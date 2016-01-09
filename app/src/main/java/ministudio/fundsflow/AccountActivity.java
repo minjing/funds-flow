@@ -1,5 +1,6 @@
 package ministudio.fundsflow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -10,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import java.util.List;
 
 import ministudio.fundsflow.domain.Account;
 
@@ -43,8 +42,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(getApplicationContext(), AccountAddActivity.class));
             }
         });
     }
