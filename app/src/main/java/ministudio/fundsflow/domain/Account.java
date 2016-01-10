@@ -54,6 +54,19 @@ public class Account {
         }
     }
 
+    public static boolean isAccountExist(SQLiteDatabase db, String accountName) {
+        if (db == null) {
+            throw new IllegalArgumentException("The argument is required - db");
+        }
+        String stmt = "select id, name from account where name = ?";
+        Cursor cursor = db.rawQuery(stmt, new String[] { accountName });
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static Account[] getAccounts(SQLiteDatabase db) {
         if (db == null) {
             throw new IllegalArgumentException("The argument is required - db");
@@ -121,7 +134,7 @@ public class Account {
     public void save() {
         if (this._id == UNDEFINED_ID) {
             // create
-            String stmt = "insert into account (name) values ('?')";
+            String stmt = "insert into account (name) values (?)";
             this._db.execSQL(stmt, new String[] { this._name });
         } else {
             // update
