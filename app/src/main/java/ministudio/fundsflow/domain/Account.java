@@ -41,11 +41,11 @@ public class Account {
     private static final String TAB_COL_ID      = "id";
     private static final String TAB_COL_NAME    = "name";
 
-    public static Account getAccount(SQLiteDatabase db, int accountId) {
+    public static Account findAccount(SQLiteDatabase db, int accountId) {
         if (db == null) {
             throw new IllegalArgumentException("The argument is required - db");
         }
-        String stmt = "select id, name from accont where id = ?";
+        String stmt = "select id, name from account where id = ?";
         Cursor cursor = db.rawQuery(stmt, new String[] { String.valueOf(accountId) });
         if (cursor.moveToFirst()) {
             return createAccount(db, cursor);
@@ -93,7 +93,7 @@ public class Account {
         return new Account(db, id, name);
     }
 
-    private static final int UNDEFINED_ID   = -1;
+    public static final int UNDEFINED_ID   = -1;
 
     private final SQLiteDatabase _db;
 
@@ -138,7 +138,7 @@ public class Account {
             this._db.execSQL(stmt, new String[] { this._name });
         } else {
             // update
-            String stmt  = "update table account (name) values ('?') where id = ?";
+            String stmt  = "update account set name = ? where id = ?";
             this._db.execSQL(stmt, new Object[] { this._name, this._id });
         }
     }

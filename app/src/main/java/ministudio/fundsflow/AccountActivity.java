@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,12 +42,25 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountAdapter = new AccountAdapter(this, accounts);
         this.accountListView.setAdapter(this.accountAdapter);
 
+        this.accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                Intent intent = new Intent(getApplicationContext(), AccountAddActivity.class);
+                intent.putExtra(AccountAddActivity.ARG_ACCOUNT_ID, id);
+                startActivityForResult(intent, RESULT_CANCELED);
+            }
+        });
+
         FloatingActionButton btnCreateAccount = (FloatingActionButton) findViewById(R.id.create_account);
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent(getApplicationContext(), AccountAddActivity.class));
-                startActivityForResult(new Intent(getApplicationContext(), AccountAddActivity.class), RESULT_CANCELED);
+//                Bundle bundle = new Bundle();
+//                bundle.putBoolean("create", true);
+                Intent intent = new Intent(getApplicationContext(), AccountAddActivity.class);
+//                intent.putExtra("create", true);
+                startActivityForResult(intent, RESULT_CANCELED);
             }
         });
     }
@@ -108,7 +122,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
 
         @Override
         public long getItemId(int i) {
-            return 0;
+            return this.accounts[i].getId();
         }
 
         @Override

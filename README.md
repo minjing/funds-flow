@@ -12,10 +12,10 @@ Basic Version Feature List
     -   [ ] Income / Expense / Transfer
     -   [ ] Tag Selection
 1.  Account Management
-    -   [ ] Account only contains its name, the name is unique
+    -   [x] Account only contains its name, the name is unique
     -   [ ] Default Account named Cash
-    -   [ ] Create Account
-    -   [ ] Modify Account
+    -   [x] Create Account
+    -   [x] Modify Account
         -   [ ] Default Account can be rename
     -   [ ] Delete Account
         -   [ ] A Default Account can't be Deleted

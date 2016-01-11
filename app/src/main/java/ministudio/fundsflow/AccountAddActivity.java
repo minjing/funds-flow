@@ -16,10 +16,16 @@ import ministudio.fundsflow.domain.Account;
 
 public class AccountAddActivity extends AppCompatActivity {
 
+    public static final String ARG_ACCOUNT_ID = "AccountId";
+
     private Intent _intent;
     private EditText _inputAccountName;
     private Button _btnSave;
     private Button _btnCancel;
+
+    private SQLitePersistence persistence;
+
+    private int _accountId = Account.UNDEFINED_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,15 @@ public class AccountAddActivity extends AppCompatActivity {
         this._inputAccountName = (EditText) findViewById(R.id.accountAdd_accountName);
         this._btnSave = (Button) findViewById(R.id.btnAccountAdd_save);
         this._btnCancel = (Button) findViewById(R.id.btnAccountAdd_cancel);
+        this._accountId = (int) this._intent.getLongExtra(ARG_ACCOUNT_ID, Account.UNDEFINED_ID);
+
+        this.persistence = new SQLitePersistence(AccountAddActivity.this);
+        if (this._accountId != Account.UNDEFINED_ID) {
+            Account account = Account.findAccount(this.persistence.getReadableDatabase(), this._accountId);
+            if (account != null) {
+                this._inputAccountName.setText(account.getName());
+            }
+        }
 
         this._btnSave.setOnClickListener(new View.OnClickListener() {
 
@@ -45,15 +60,28 @@ public class AccountAddActivity extends AppCompatActivity {
                 }
 
                 SQLitePersistence persistence = new SQLitePersistence(AccountAddActivity.this);
-                boolean isExist = Account.isAccountExist(persistence.getReadableDatabase(), newName);
-                if (isExist) {
-                    Snackbar.make(AccountAddActivity.this.findViewById(R.id.accountAdd_accountName),
-                            "Account exists", Snackbar.LENGTH_LONG).show();
-                }
+                if (_accountId != Account.UNDEFINED_ID) {
+                    Account account = Account.findAccount(persistence.getWritableDatabase(), _accountId);
+                    if (account == null) {
+                        Snackbar.make(AccountAddActivity.this.findViewById(R.id.accountAdd_accountName),
+                                "Account does not exists - " + _accountId, Snackbar.LENGTH_LONG).show();
+                        setResult(RESULT_CANCELED);
+                    } else {
+                        account.setName(newName);
+                        account.save();
+                        setResult(RESULT_OK);
+                    }
+                } else {
+                    boolean isExist = Account.isAccountExist(persistence.getReadableDatabase(), newName);
+                    if (isExist) {
+                        Snackbar.make(AccountAddActivity.this.findViewById(R.id.accountAdd_accountName),
+                                "Account exists", Snackbar.LENGTH_LONG).show();
+                    }
 
-                Account newAccount = new Account(persistence.getWritableDatabase(), newName);
-                newAccount.save();
-                setResult(RESULT_OK);
+                    Account newAccount = new Account(persistence.getWritableDatabase(), newName);
+                    newAccount.save();
+                    setResult(RESULT_OK);
+                }
                 AccountAddActivity.this.finish();
             }
         });
