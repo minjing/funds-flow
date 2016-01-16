@@ -8,12 +8,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import ministudio.fundsflow.domain.Account;
@@ -25,6 +29,8 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
 
     private SQLitePersistence persistence;
     private AccountAdapter accountAdapter;
+
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,8 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
                 startActivityForResult(intent, RESULT_CANCELED);
             }
         });
+
+        registerForContextMenu(this.accountListView);
     }
 
     @Override
@@ -94,6 +102,26 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.account_item_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.remove_account:
+                Account.deleteAccount(this.persistence.getWritableDatabase(), menuInfo.id);
+                this.accountAdapter.update(Account.getAccounts(this.persistence.getReadableDatabase()));
+                this.accountAdapter.notifyDataSetChanged();
+                return true;
+        }
+        return false;
     }
 
     private static final class AccountAdapter extends BaseAdapter {

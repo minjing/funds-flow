@@ -76,6 +76,7 @@ public class AccountAddActivity extends AppCompatActivity {
                     if (isExist) {
                         Snackbar.make(AccountAddActivity.this.findViewById(R.id.accountAdd_accountName),
                                 "Account exists", Snackbar.LENGTH_LONG).show();
+                        return;
                     }
 
                     Account newAccount = new Account(persistence.getWritableDatabase(), newName);

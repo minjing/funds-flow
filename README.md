@@ -17,7 +17,7 @@ Basic Version Feature List
     -   [x] Create Account
     -   [x] Modify Account
         -   [ ] Default Account can be rename
-    -   [ ] Delete Account
+    -   [x] Delete Account
         -   [ ] A Default Account can't be Deleted
 1.  Tag Management
     -   [ ] Tag only contains its name

@@ -25,11 +25,13 @@ public class Account {
                         "id integer primary key autoincrement, " +
                         "name text not null " +
                         ")";
+        private static final String STMT_DEFAULT_VALUE =
+                "insert into insert into account (id, name) values (0, Crash)";
         private static final String STMT_DROP_TABLE  = "drop table if exist account";
 
         @Override
         public String[] getCreateStatement() {
-            return new String[] { STMT_CREATE_TABLE };
+            return new String[] { STMT_CREATE_TABLE, STMT_DEFAULT_VALUE };
         }
 
         @Override
@@ -71,7 +73,7 @@ public class Account {
         if (db == null) {
             throw new IllegalArgumentException("The argument is required - db");
         }
-        String stmt = "SELECT id, name FROM account";
+        String stmt = "select id, name from account";
         Cursor cursor = db.rawQuery(stmt, new String[0]);
         List<Account> accounts;
         if (cursor.moveToFirst()) {
@@ -85,6 +87,14 @@ public class Account {
         cursor.close();
         db.close();
         return accounts.toArray(new Account[accounts.size()]);
+    }
+
+    public static void deleteAccount(SQLiteDatabase db, long accountId) {
+        if (db == null) {
+            throw new IllegalArgumentException("The argument is required - db");
+        }
+        String stmt = "delete from account where id = ?";
+        db.execSQL(stmt, new Object[] { accountId });
     }
 
     private static Account createAccount(SQLiteDatabase db, Cursor cursor) {
