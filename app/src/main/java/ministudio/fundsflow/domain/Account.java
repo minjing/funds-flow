@@ -26,7 +26,7 @@ public class Account {
                         "name text not null " +
                         ")";
         private static final String STMT_DEFAULT_VALUE =
-                "insert into insert into account (id, name) values (0, Crash)";
+                "insert into account (id, name) values (0, 'Crash')";
         private static final String STMT_DROP_TABLE  = "drop table if exist account";
 
         @Override
