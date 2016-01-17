@@ -15,4 +15,5 @@
     <string name="label_account_name">Account Name</string>
     <string name="label_save">Save</string>
     <string name="label_cancel">Cancel</string>
+    <string name="title_activity_tag_account">TagAccount</string>
 </resources>

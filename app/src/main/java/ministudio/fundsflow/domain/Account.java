@@ -14,7 +14,7 @@ import ministudio.fundsflow.IPersistenceInitializer;
 /**
  * Created by min on 15/12/25.
  */
-public class Account {
+public class Account implements Domain {
 
     public static final long DEFAULT_ACCOUNT_ID = 0;
 
@@ -42,7 +42,6 @@ public class Account {
         }
     }
 
-    private static final String TAB_COL_ID      = "id";
     private static final String TAB_COL_NAME    = "name";
 
     public static Account findAccount(SQLiteDatabase db, int accountId) {
@@ -100,12 +99,10 @@ public class Account {
     }
 
     private static Account createAccount(SQLiteDatabase db, Cursor cursor) {
-        int id = cursor.getInt(cursor.getColumnIndex(TAB_COL_ID));
+        int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
         String name = cursor.getString(cursor.getColumnIndex(TAB_COL_NAME));
         return new Account(db, id, name);
     }
-
-    public static final int UNDEFINED_ID   = -1;
 
     private final SQLiteDatabase _db;
 

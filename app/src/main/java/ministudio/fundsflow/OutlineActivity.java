@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ministudio.fundsflow.activity.TagAccount;
+
 public class OutlineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -89,17 +91,10 @@ public class OutlineActivity extends AppCompatActivity
             case R.id.nav_account:
                 // Open account management activate
                 startActivity(new Intent(getApplicationContext(), AccountActivity.class));
-                final Snackbar snackbar = Snackbar.make(this.findViewById(R.id.nav_view), "Open Account Management Activate", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Ignore", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        snackbar.dismiss();
-                    }
-                }).show();
                 break;
             case R.id.nav_tag:
                 // Open tag management activate
-                Snackbar.make(this.findViewById(R.id.nav_view), "Open Tag Management Activate", Snackbar.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), TagAccount.class));
                 break;
             case R.id.nav_budget:
                 // Open budget activate
