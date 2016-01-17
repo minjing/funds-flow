@@ -16,6 +16,8 @@ import ministudio.fundsflow.IPersistenceInitializer;
  */
 public class Account {
 
+    public static final long DEFAULT_ACCOUNT_ID = 0;
+
     public static final IPersistenceInitializer initializer = new AccountInitializer();
 
     private static final class AccountInitializer implements IPersistenceInitializer {
@@ -25,13 +27,13 @@ public class Account {
                         "id integer primary key autoincrement, " +
                         "name text not null " +
                         ")";
-        private static final String STMT_DEFAULT_VALUE =
-                "insert into account (id, name) values (0, 'Crash')";
+        private static final String STMT_DEFAULT_DATA =
+                "insert into account (id, name) values (" + DEFAULT_ACCOUNT_ID + ", 'Crash')";
         private static final String STMT_DROP_TABLE  = "drop table if exist account";
 
         @Override
         public String[] getCreateStatement() {
-            return new String[] { STMT_CREATE_TABLE, STMT_DEFAULT_VALUE };
+            return new String[] { STMT_CREATE_TABLE, STMT_DEFAULT_DATA };
         }
 
         @Override

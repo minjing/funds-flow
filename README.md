@@ -13,12 +13,12 @@ Basic Version Feature List
     -   [ ] Tag Selection
 1.  Account Management
     -   [x] Account only contains its name, the name is unique
-    -   [ ] Default Account named Cash
+    -   [x] Default Account named Cash
     -   [x] Create Account
     -   [x] Modify Account
-        -   [ ] Default Account can be rename
+        -   [x] Default Account can be rename
     -   [x] Delete Account
-        -   [ ] A Default Account can't be Deleted
+        -   [x] A Default Account can't be Deleted
 1.  Tag Management
     -   [ ] Tag only contains its name
     -   [ ] Create / Modify / Delete Tag

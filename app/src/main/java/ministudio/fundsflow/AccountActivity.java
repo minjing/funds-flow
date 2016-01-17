@@ -116,6 +116,10 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.remove_account:
+                if (menuInfo.id == Account.DEFAULT_ACCOUNT_ID) {
+                    UIHelper.showMessage(findViewById(R.id.account_list), "Default account can't be deleted.");
+                    return true;
+                }
                 Account.deleteAccount(this.persistence.getWritableDatabase(), menuInfo.id);
                 this.accountAdapter.update(Account.getAccounts(this.persistence.getReadableDatabase()));
                 this.accountAdapter.notifyDataSetChanged();

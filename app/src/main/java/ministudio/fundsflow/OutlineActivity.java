@@ -82,6 +82,10 @@ public class OutlineActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.nav_outline:
+                // Open outline activate
+                startActivity(new Intent(getApplicationContext(), OutlineActivity.class));
+                break;
             case R.id.nav_account:
                 // Open account management activate
                 startActivity(new Intent(getApplicationContext(), AccountActivity.class));
