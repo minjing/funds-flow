@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Strings;
 
-import ministudio.fundsflow.DomainCreator;
+import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
 
@@ -44,7 +44,7 @@ public class Tag implements Domain {
 
     private static final TagCreator creator = new TagCreator();
 
-    private static final class TagCreator implements DomainCreator<Tag> {
+    private static final class TagCreator implements IDomainCreator<Tag> {
 
         @Override
         public Tag create(SQLitePersistence persistence, Cursor cursor) {
@@ -58,14 +58,14 @@ public class Tag implements Domain {
     /*********************************************************
      * Static methods for finding and deleting functionality *
      *********************************************************/
-    public static Tag findTag(SQLitePersistence persistence, int id) {
+    public static Tag findById(SQLitePersistence persistence, int id) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
         return persistence.findById(TAB_NAME, id, creator);
     }
 
-    public static Tag[] findTags(SQLitePersistence persistence) {
+    public static Tag[] findAll(SQLitePersistence persistence) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
@@ -86,19 +86,21 @@ public class Tag implements Domain {
 
     private int _id;
     private int _typeId;
+    private int _catId;
     private String _name;
 
     public Tag(SQLitePersistence persistence, String name) {
-        this(persistence, UNDEFINED_ID, UNDEFINED_ID, name);
+        this(persistence, UNDEFINED_ID, UNDEFINED_ID, UNDEFINED_ID, name);
     }
 
-    public Tag(SQLitePersistence persistence, int id, int typeId, String name) {
+    public Tag(SQLitePersistence persistence, int id, int typeId, int catId, String name) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
         this._persistence = persistence;
         this._id = id;
         this._typeId = typeId;
+        this._catId = catId;
         this._name = name;
     }
 
@@ -130,6 +132,22 @@ public class Tag implements Domain {
             this._typeId = UNDEFINED_ID;
         } else {
             this._typeId = type.getId();
+        }
+    }
+
+    public TagCategory getCategory() {
+        if (this._catId == UNDEFINED_ID) {
+            return null;
+        } else {
+            return TagCategory.findById(this._persistence, this._catId);
+        }
+    }
+
+    public void setCategory(TagCategory category) {
+        if (category == null) {
+            this._catId = UNDEFINED_ID;
+        } else {
+            this._catId = category.getId();
         }
     }
 

@@ -1,6 +1,7 @@
 package ministudio.fundsflow.domain;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Strings;
 
@@ -9,37 +10,32 @@ import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
 
 /**
- * Created by min on 16/1/17.
+ * Created by min on 16/1/18.
  */
-public class TagType implements Domain {
+public class TagCategory implements Domain {
 
-    private static final String TAB_NAME    = "tag_type";
+    private static final String TAB_NAME    = "tag_category";
     private static final String COL_NAME    = "name";
 
-    public static final long TYPE_ACCOUNT_ID = 1;
-    public static final long TYPE_TRADING_ID = 2;
+    /************************
+     * DB Table Initializer *
+     ************************/
+    private static final TagCategoryInitializer initializer = new TagCategoryInitializer();
 
-    /*********************
-     * Table Initializer *
-     *********************/
-    public static final IPersistenceInitializer initializer = new TagTypeInitializer();
-
-    private static final class TagTypeInitializer implements IPersistenceInitializer {
+    private static final class TagCategoryInitializer implements IPersistenceInitializer {
 
         private static final String STMT_CREATE_TABLE =
                 "create table " + TAB_NAME + " (" +
-                        COL_ID + " integer primary key, " +
-                        COL_NAME + " text not null " +
-                        ")";
-        private static final String STMT_ACCOUNT_DATA =
-                "insert into tag_category (id, name) values (" + TYPE_ACCOUNT_ID + ", 'Account')";
-        private static final String STMT_TRADING_DATA =
-                "insert into tag_category (id, name) values (" + TYPE_TRADING_ID + ", 'Trading')";
+                    COL_ID + " integer primary key, " +
+                    COL_NAME + " text not null " +
+                ")";
         private static final String STMT_DROP_TABLE  = "drop table if exist " + TAB_NAME;
+
+        private TagCategoryInitializer() { }
 
         @Override
         public String[] getCreateStatement() {
-            return new String[] { STMT_CREATE_TABLE, STMT_ACCOUNT_DATA, STMT_TRADING_DATA };
+            return new String[] { STMT_CREATE_TABLE };
         }
 
         @Override
@@ -48,32 +44,38 @@ public class TagType implements Domain {
         }
     }
 
-    private static final TagTypeCreator creator = new TagTypeCreator();
+    private static final class TagCategoryCreator implements IDomainCreator<TagCategory> {
 
-    private static final class TagTypeCreator implements IDomainCreator<TagType> {
         @Override
-        public TagType create(SQLitePersistence persistence, Cursor cursor) {
+        public TagCategory create(SQLitePersistence persistence, Cursor cursor) {
             int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
             String name = cursor.getString(cursor.getColumnIndex(COL_NAME));
-            return new TagType(persistence, id, name);
+            return new Tag(persistence, id, name);
         }
     }
 
     /*********************************************************
      * Static methods for finding and deleting functionality *
      *********************************************************/
-    public static TagType findById(SQLitePersistence persistence, int id) {
+    public static TagCategory findById(SQLitePersistence persistence, int id) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
         return persistence.findById(TAB_NAME, id, creator);
     }
 
-    public static TagType[] findAll(SQLitePersistence persistence) {
+    public static TagCategory[] findAll(SQLitePersistence persistence) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
         return persistence.findAll(TAB_NAME, creator);
+    }
+
+    public static void delete(SQLitePersistence persistence, int id) {
+        if (persistence == null) {
+            throw new IllegalArgumentException("The argument is required - persistence");
+        }
+        persistence.delete(TAB_NAME, id);
     }
 
     /*************************************
@@ -83,14 +85,14 @@ public class TagType implements Domain {
     private int _id;
     private String _name;
 
-    public TagType(SQLitePersistence persistence) {
+    public TagCategory(SQLitePersistence persistence) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
         this._persistence = persistence;
     }
 
-    public TagType(SQLitePersistence persistence, int id, String name) {
+    public TagCategory(SQLitePersistence persistence, int id, String name) {
         this(persistence);
         if (Strings.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("The argument is required - name");
@@ -105,5 +107,25 @@ public class TagType implements Domain {
 
     public String getName() {
         return this._name;
+    }
+
+    public void setName(String name) {
+        if (Strings.isNullOrEmpty(name)) {
+            throw new IllegalArgumentException("The argument is required - name");
+        }
+        this._name = name;
+    }
+
+    public void save() {
+        SQLiteDatabase db = this._persistence.getWritableDatabase();
+        if (this._id == UNDEFINED_ID) {
+            // create
+            String stmt = "insert into " + TAB_NAME + " (" + COL_NAME + ") values (?)";
+            db.execSQL(stmt, new String[] { this._name });
+        } else {
+            // update
+            String stmt  = "update " + TAB_NAME + " set " + COL_NAME + " = ? where id = ?";
+            db.execSQL(stmt, new Object[] { this._name, this._id });
+        }
     }
 }
