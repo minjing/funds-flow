@@ -2,7 +2,6 @@ package ministudio.fundsflow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,7 +41,7 @@ public class AccountAddActivity extends AppCompatActivity {
 
         this.persistence = new SQLitePersistence(AccountAddActivity.this);
         if (this._accountId != Account.UNDEFINED_ID) {
-            Account account = Account.findAccount(this.persistence.getReadableDatabase(), this._accountId);
+            Account account = Account.findById(this.persistence, this._accountId);
             if (account != null) {
                 this._inputAccountName.setText(account.getName());
             }
@@ -61,7 +60,7 @@ public class AccountAddActivity extends AppCompatActivity {
 
                 SQLitePersistence persistence = new SQLitePersistence(AccountAddActivity.this);
                 if (_accountId != Account.UNDEFINED_ID) {
-                    Account account = Account.findAccount(persistence.getWritableDatabase(), _accountId);
+                    Account account = Account.findById(persistence, _accountId);
                     if (account == null) {
                         Snackbar.make(AccountAddActivity.this.findViewById(R.id.accountAdd_accountName),
                                 "Account does not exists - " + _accountId, Snackbar.LENGTH_LONG).show();
@@ -72,14 +71,14 @@ public class AccountAddActivity extends AppCompatActivity {
                         setResult(RESULT_OK);
                     }
                 } else {
-                    boolean isExist = Account.isAccountExist(persistence.getReadableDatabase(), newName);
+                    boolean isExist = Account.isAccountExist(persistence, newName);
                     if (isExist) {
                         Snackbar.make(AccountAddActivity.this.findViewById(R.id.accountAdd_accountName),
                                 "Account exists", Snackbar.LENGTH_LONG).show();
                         return;
                     }
 
-                    Account newAccount = new Account(persistence.getWritableDatabase(), newName);
+                    Account newAccount = new Account(persistence, newName);
                     newAccount.save();
                     setResult(RESULT_OK);
                 }

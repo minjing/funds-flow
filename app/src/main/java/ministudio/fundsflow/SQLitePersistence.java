@@ -9,12 +9,14 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import ministudio.fundsflow.domain.Account;
 import ministudio.fundsflow.domain.Domain;
+import ministudio.fundsflow.domain.TagCategory;
 import ministudio.fundsflow.domain.TagType;
 
 /**
@@ -29,7 +31,8 @@ public class SQLitePersistence extends SQLiteOpenHelper {
     static {
         persistenceInitializers = new IPersistenceInitializer[] {
                 Account.initializer,
-                TagType.initializer
+                TagType.initializer,
+                TagCategory.initializer
         };
     }
 
@@ -72,7 +75,7 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public <T extends Domain> T findById(String tableName, int id, DomainCreator<T> creator) {
+    public <T extends Domain> T findById(String tableName, int id, IDomainCreator<T> creator) {
         if (Strings.isNullOrEmpty(tableName)) {
             throw new IllegalArgumentException("The argument is required - tableName");
         }
@@ -91,7 +94,7 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         return domain;
     }
 
-    public <T extends Domain> T[] findAll(String tableName, DomainCreator<T> creator) {
+    public <T extends Domain> T[] findAll(String tableName, IDomainCreator<T> creator) {
         if (Strings.isNullOrEmpty(tableName)) {
             throw new IllegalArgumentException("The argument is required - tableName");
         }
@@ -112,7 +115,18 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        return (T[]) domains.toArray(new Object[domains.size()]);
+
+//        Type[] superTypes = creator.getClass().getGenericInterfaces();
+//        Type genericType = null;
+//        for (Type superType : superTypes) {
+//            if (!ParameterizedType.class.isAssignableFrom(superType.getClass())) {
+//                continue;
+//            }
+//            genericType = ((ParameterizedType)superType).getActualTypeArguments()[0];
+//        }
+//        Class<?> domainClass = (Class<T>)ReflectionUtil.getClass(genericType);
+
+        return domains.toArray((T[]) Array.newInstance(creator.getDomainClass(), domains.size()));
     }
 
     public void delete(String tableName, int id) {

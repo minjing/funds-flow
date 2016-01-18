@@ -9,27 +9,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
+import ministudio.fundsflow.SQLitePersistence;
 
 /**
  * Created by min on 15/12/25.
  */
 public class Account implements Domain {
 
+    private static final String TAB_NAME    = "account";
+    private static final String COL_NAME    = "name";
+
     public static final long DEFAULT_ACCOUNT_ID = 0;
 
+    /*********************
+     * Table Initializer *
+     *********************/
     public static final IPersistenceInitializer initializer = new AccountInitializer();
 
     private static final class AccountInitializer implements IPersistenceInitializer {
 
         private static final String STMT_CREATE_TABLE =
-                "create table account (" +
-                        "id integer primary key autoincrement, " +
-                        "name text not null " +
-                        ")";
+                "create table " + TAB_NAME + " (" +
+                        COL_ID + " integer primary key autoincrement, " +
+                        COL_NAME + " text not null " +
+                ")";
         private static final String STMT_DEFAULT_DATA =
-                "insert into account (id, name) values (" + DEFAULT_ACCOUNT_ID + ", 'Crash')";
-        private static final String STMT_DROP_TABLE  = "drop table if exist account";
+                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_NAME + ") values (" + DEFAULT_ACCOUNT_ID + ", 'Crash')";
+        private static final String STMT_DROP_TABLE  = "drop table if exist " + TAB_NAME;
 
         @Override
         public String[] getCreateStatement() {
@@ -42,25 +50,52 @@ public class Account implements Domain {
         }
     }
 
-    private static final String TAB_COL_NAME    = "name";
+    private static final AccountCreator creator = new AccountCreator();
 
-    public static Account findAccount(SQLiteDatabase db, int accountId) {
-        if (db == null) {
-            throw new IllegalArgumentException("The argument is required - db");
+    private static final class AccountCreator implements IDomainCreator<Account> {
+
+        @Override
+        public Class<Account> getDomainClass() {
+            return Account.class;
         }
-        String stmt = "select id, name from account where id = ?";
-        Cursor cursor = db.rawQuery(stmt, new String[] { String.valueOf(accountId) });
-        if (cursor.moveToFirst()) {
-            return createAccount(db, cursor);
-        } else {
-            return null;
+
+        @Override
+        public Account create(SQLitePersistence persistence, Cursor cursor) {
+            int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
+            String name = cursor.getString(cursor.getColumnIndex(COL_NAME));
+            return new Account(persistence, id, name);
         }
     }
 
-    public static boolean isAccountExist(SQLiteDatabase db, String accountName) {
-        if (db == null) {
+    /*********************************************************
+     * Static methods for finding and deleting functionality *
+     *********************************************************/
+    public static Account findById(SQLitePersistence persistence, int accountId) {
+        if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - db");
         }
+        return persistence.findById(TAB_NAME, accountId, creator);
+    }
+
+    public static Account[] getAll(SQLitePersistence persistence) {
+        if (persistence == null) {
+            throw new IllegalArgumentException("The argument is required - db");
+        }
+        return persistence.findAll(TAB_NAME, creator);
+    }
+
+    public static void delete(SQLitePersistence persistence, int accountId) {
+        if (persistence == null) {
+            throw new IllegalArgumentException("The argument is required - persistence");
+        }
+        persistence.delete(TAB_NAME, accountId);
+    }
+
+    public static boolean isAccountExist(SQLitePersistence persistence, String accountName) {
+        if (persistence == null) {
+            throw new IllegalArgumentException("The argument is required - persistence");
+        }
+        SQLiteDatabase db = persistence.getReadableDatabase();
         String stmt = "select id, name from account where name = ?";
         Cursor cursor = db.rawQuery(stmt, new String[] { accountName });
         if (cursor.moveToFirst()) {
@@ -70,57 +105,26 @@ public class Account implements Domain {
         }
     }
 
-    public static Account[] getAccounts(SQLiteDatabase db) {
-        if (db == null) {
-            throw new IllegalArgumentException("The argument is required - db");
-        }
-        String stmt = "select id, name from account";
-        Cursor cursor = db.rawQuery(stmt, new String[0]);
-        List<Account> accounts;
-        if (cursor.moveToFirst()) {
-            accounts = new ArrayList<>();
-            do {
-                accounts.add(createAccount(db, cursor));
-            } while (cursor.moveToNext());
-        } else {
-            accounts = Collections.emptyList();
-        }
-        cursor.close();
-        db.close();
-        return accounts.toArray(new Account[accounts.size()]);
-    }
-
-    public static void deleteAccount(SQLiteDatabase db, long accountId) {
-        if (db == null) {
-            throw new IllegalArgumentException("The argument is required - db");
-        }
-        String stmt = "delete from account where id = ?";
-        db.execSQL(stmt, new Object[] { accountId });
-    }
-
-    private static Account createAccount(SQLiteDatabase db, Cursor cursor) {
-        int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
-        String name = cursor.getString(cursor.getColumnIndex(TAB_COL_NAME));
-        return new Account(db, id, name);
-    }
-
-    private final SQLiteDatabase _db;
+    /*********************************************************
+     * Static methods for finding and deleting functionality *
+     *********************************************************/
+    private final SQLitePersistence _persistence;
 
     private int     _id;
     private String  _name = null;
 
-    public Account(SQLiteDatabase db, String name) {
-        this(db, UNDEFINED_ID, name);
+    public Account(SQLitePersistence persistence, String name) {
+        this(persistence, UNDEFINED_ID, name);
     }
 
-    public Account(SQLiteDatabase db, int id, String name) {
-        if (db == null) {
+    public Account(SQLitePersistence persistence, int id, String name) {
+        if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - db");
         }
         if (Strings.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("The argument is required - name");
         }
-        this._db = db;
+        this._persistence = persistence;
         this._id = id;
         this._name = name;
     }
@@ -141,14 +145,15 @@ public class Account implements Domain {
     }
 
     public void save() {
+        SQLiteDatabase db = this._persistence.getWritableDatabase();
         if (this._id == UNDEFINED_ID) {
             // create
             String stmt = "insert into account (name) values (?)";
-            this._db.execSQL(stmt, new String[] { this._name });
+            db.execSQL(stmt, new String[] { this._name });
         } else {
             // update
             String stmt  = "update account set name = ? where id = ?";
-            this._db.execSQL(stmt, new Object[] { this._name, this._id });
+            db.execSQL(stmt, new Object[] { this._name, this._id });
         }
     }
 }

@@ -20,7 +20,7 @@ public class TagCategory implements Domain {
     /************************
      * DB Table Initializer *
      ************************/
-    private static final TagCategoryInitializer initializer = new TagCategoryInitializer();
+    public static final TagCategoryInitializer initializer = new TagCategoryInitializer();
 
     private static final class TagCategoryInitializer implements IPersistenceInitializer {
 
@@ -44,13 +44,20 @@ public class TagCategory implements Domain {
         }
     }
 
+    private static final TagCategoryCreator creator = new TagCategoryCreator();
+
     private static final class TagCategoryCreator implements IDomainCreator<TagCategory> {
+
+        @Override
+        public Class<TagCategory> getDomainClass() {
+            return TagCategory.class;
+        }
 
         @Override
         public TagCategory create(SQLitePersistence persistence, Cursor cursor) {
             int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
             String name = cursor.getString(cursor.getColumnIndex(COL_NAME));
-            return new Tag(persistence, id, name);
+            return new TagCategory(persistence, id, name);
         }
     }
 

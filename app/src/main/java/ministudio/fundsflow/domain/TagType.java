@@ -32,9 +32,9 @@ public class TagType implements Domain {
                         COL_NAME + " text not null " +
                         ")";
         private static final String STMT_ACCOUNT_DATA =
-                "insert into tag_category (id, name) values (" + TYPE_ACCOUNT_ID + ", 'Account')";
+                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_NAME + ") values (" + TYPE_ACCOUNT_ID + ", 'Account')";
         private static final String STMT_TRADING_DATA =
-                "insert into tag_category (id, name) values (" + TYPE_TRADING_ID + ", 'Trading')";
+                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_NAME + ") values (" + TYPE_TRADING_ID + ", 'Trading')";
         private static final String STMT_DROP_TABLE  = "drop table if exist " + TAB_NAME;
 
         @Override
@@ -51,6 +51,12 @@ public class TagType implements Domain {
     private static final TagTypeCreator creator = new TagTypeCreator();
 
     private static final class TagTypeCreator implements IDomainCreator<TagType> {
+
+        @Override
+        public Class<TagType> getDomainClass() {
+            return TagType.class;
+        }
+
         @Override
         public TagType create(SQLitePersistence persistence, Cursor cursor) {
             int id = cursor.getInt(cursor.getColumnIndex(COL_ID));

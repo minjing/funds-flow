@@ -44,7 +44,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountListLayout.setOnRefreshListener(this);
 
         this.persistence = new SQLitePersistence(this);
-        Account[] accounts = Account.getAccounts(persistence.getReadableDatabase());
+        Account[] accounts = Account.getAll(persistence);
         this.accountAdapter = new AccountAdapter(this, accounts);
         this.accountListView.setAdapter(this.accountAdapter);
 
@@ -78,7 +78,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 accountListLayout.setRefreshing(false);
-                accountAdapter.update(Account.getAccounts(persistence.getReadableDatabase()));
+                accountAdapter.update(Account.getAll(persistence));
                 accountAdapter.notifyDataSetChanged();
             }
         }, 500);
@@ -87,14 +87,14 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
     @Override
     public void onResume() {
         super.onResume();
-        this.accountAdapter.update(Account.getAccounts(this.persistence.getReadableDatabase()));
+        this.accountAdapter.update(Account.getAll(this.persistence));
         this.accountAdapter.notifyDataSetChanged();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                this.accountAdapter.update(Account.getAccounts(this.persistence.getReadableDatabase()));
+                this.accountAdapter.update(Account.getAll(this.persistence));
                 this.accountAdapter.notifyDataSetChanged();
                 break;
             case RESULT_CANCELED:
@@ -120,8 +120,8 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
                     UIHelper.showMessage(findViewById(R.id.account_list), "Default account can't be deleted.");
                     return true;
                 }
-                Account.deleteAccount(this.persistence.getWritableDatabase(), menuInfo.id);
-                this.accountAdapter.update(Account.getAccounts(this.persistence.getReadableDatabase()));
+                Account.delete(this.persistence, (int) menuInfo.id);
+                this.accountAdapter.update(Account.getAll(this.persistence));
                 this.accountAdapter.notifyDataSetChanged();
                 return true;
         }

@@ -9,5 +9,7 @@ import ministudio.fundsflow.domain.Domain;
  */
 public interface IDomainCreator<T extends Domain> {
 
+    Class<T> getDomainClass();
+
     T create(SQLitePersistence persistence, Cursor cursor);
 }

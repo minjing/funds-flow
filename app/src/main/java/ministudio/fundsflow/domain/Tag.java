@@ -16,6 +16,7 @@ public class Tag implements Domain {
 
     private static final String TAB_NAME    = "tag";
     private static final String COL_TYPE_ID = "type_id";
+    private static final String COL_CAT_ID  = "cat_id";
     private static final String COL_NAME    = "name";
 
     /*********************
@@ -47,11 +48,17 @@ public class Tag implements Domain {
     private static final class TagCreator implements IDomainCreator<Tag> {
 
         @Override
+        public Class<Tag> getDomainClass() {
+            return Tag.class;
+        }
+
+        @Override
         public Tag create(SQLitePersistence persistence, Cursor cursor) {
             int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
             String name = cursor.getString(cursor.getColumnIndex(COL_NAME));
-            int catId = cursor.getInt(cursor.getColumnIndex(COL_TYPE_ID));
-            return new Tag(persistence, id, catId, name);
+            int typeId = cursor.getInt(cursor.getColumnIndex(COL_TYPE_ID));
+            int catId = cursor.getInt(cursor.getColumnIndex(COL_CAT_ID));
+            return new Tag(persistence, id, typeId, catId, name);
         }
     }
 
