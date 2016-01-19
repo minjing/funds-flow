@@ -1,4 +1,4 @@
-package ministudio.fundsflow.domain;
+package ministudio.fundsflow.tag;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +8,7 @@ import com.google.common.base.Strings;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
+import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by min on 16/1/18.

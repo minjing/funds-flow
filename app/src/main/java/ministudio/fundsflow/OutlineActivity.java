@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ministudio.fundsflow.activity.TagAccount;
+import ministudio.fundsflow.tag.TagActivity;
 
 public class OutlineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,7 +94,7 @@ public class OutlineActivity extends AppCompatActivity
                 break;
             case R.id.nav_tag:
                 // Open tag management activate
-                startActivity(new Intent(getApplicationContext(), TagAccount.class));
+                startActivity(new Intent(getApplicationContext(), TagActivity.class));
                 break;
             case R.id.nav_budget:
                 // Open budget activate

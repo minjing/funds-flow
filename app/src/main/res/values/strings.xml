@@ -15,5 +15,8 @@
     <string name="label_account_name">Account Name</string>
     <string name="label_save">Save</string>
     <string name="label_cancel">Cancel</string>
-    <string name="title_activity_tag_account">TagAccount</string>
+    <string name="title_activity_tag">Tag Management</string>
+
+    <string name="title_tag_type_account">Account Tags</string>
+    <string name="title_tag_type_trading">Trading Tags</string>
 </resources>

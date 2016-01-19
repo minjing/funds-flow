@@ -27,9 +27,9 @@
             android:label="@string/title_activity_account_add"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.TagAccount"
-            android:label="@string/title_activity_tag_account"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".tag.TagActivity"
+            android:label="@string/title_activity_tag"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

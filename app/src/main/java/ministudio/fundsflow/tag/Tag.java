@@ -1,13 +1,20 @@
-package ministudio.fundsflow.domain;
+package ministudio.fundsflow.tag;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 
 import com.google.common.base.Strings;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
+import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by min on 15/12/25.
@@ -77,6 +84,28 @@ public class Tag implements Domain {
             throw new IllegalArgumentException("The argument is required - persistence");
         }
         return persistence.findAll(TAB_NAME, creator);
+    }
+
+    public static Tag[] findByType(SQLitePersistence persistence, int typeId) {
+        if (persistence == null) {
+            throw new IllegalArgumentException("The argument is required = persistence");
+        }
+        SQLiteDatabase db = persistence.getReadableDatabase();
+        String stmt = "select * from " + TAB_NAME + " where " + COL_TYPE_ID + " = ?";
+        Cursor cursor = db.rawQuery(stmt, new String[]{String.valueOf(typeId)});
+        List<Tag> domains;
+        if (cursor.moveToFirst()) {
+            domains = new ArrayList<>();
+            do {
+                domains.add(creator.create(persistence, cursor));
+            } while (cursor.moveToNext());
+        } else {
+            domains = Collections.emptyList();
+        }
+        cursor.close();
+        db.close();
+
+        return domains.toArray(new Tag[domains.size()]);
     }
 
     public static void delete(SQLitePersistence persistence, int id) {

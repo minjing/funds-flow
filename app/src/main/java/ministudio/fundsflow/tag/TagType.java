@@ -1,4 +1,4 @@
-package ministudio.fundsflow.domain;
+package ministudio.fundsflow.tag;
 
 import android.database.Cursor;
 
@@ -7,6 +7,7 @@ import com.google.common.base.Strings;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
+import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by min on 16/1/17.
@@ -14,7 +15,7 @@ import ministudio.fundsflow.SQLitePersistence;
 public class TagType implements Domain {
 
     private static final String TAB_NAME    = "tag_type";
-    private static final String COL_NAME    = "name";
+    private static final String COL_RES_KEY = "res_key";
 
     public static final long TYPE_ACCOUNT_ID = 1;
     public static final long TYPE_TRADING_ID = 2;
@@ -29,12 +30,12 @@ public class TagType implements Domain {
         private static final String STMT_CREATE_TABLE =
                 "create table " + TAB_NAME + " (" +
                         COL_ID + " integer primary key, " +
-                        COL_NAME + " text not null " +
+                        COL_RES_KEY + " text not null " +
                         ")";
         private static final String STMT_ACCOUNT_DATA =
-                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_NAME + ") values (" + TYPE_ACCOUNT_ID + ", 'Account')";
+                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_RES_KEY + ") values (" + TYPE_ACCOUNT_ID + ", 'title_tag_type_account')";
         private static final String STMT_TRADING_DATA =
-                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_NAME + ") values (" + TYPE_TRADING_ID + ", 'Trading')";
+                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_RES_KEY + ") values (" + TYPE_TRADING_ID + ", 'title_tag_type_trading')";
         private static final String STMT_DROP_TABLE  = "drop table if exist " + TAB_NAME;
 
         @Override
@@ -60,8 +61,8 @@ public class TagType implements Domain {
         @Override
         public TagType create(SQLitePersistence persistence, Cursor cursor) {
             int id = cursor.getInt(cursor.getColumnIndex(COL_ID));
-            String name = cursor.getString(cursor.getColumnIndex(COL_NAME));
-            return new TagType(persistence, id, name);
+            String resKey = cursor.getString(cursor.getColumnIndex(COL_RES_KEY));
+            return new TagType(persistence, id, resKey);
         }
     }
 
@@ -87,7 +88,7 @@ public class TagType implements Domain {
      *************************************/
     private final SQLitePersistence _persistence;
     private int _id;
-    private String _name;
+    private String _resKey;
 
     public TagType(SQLitePersistence persistence) {
         if (persistence == null) {
@@ -96,20 +97,20 @@ public class TagType implements Domain {
         this._persistence = persistence;
     }
 
-    public TagType(SQLitePersistence persistence, int id, String name) {
+    public TagType(SQLitePersistence persistence, int id, String resKey) {
         this(persistence);
-        if (Strings.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("The argument is required - name");
+        if (Strings.isNullOrEmpty(resKey)) {
+            throw new IllegalArgumentException("The argument is required - resKey");
         }
         this._id = id;
-        this._name = name;
+        this._resKey = resKey;
     }
 
     public int getId() {
         return this._id;
     }
 
-    public String getName() {
-        return this._name;
+    public String getResourceKey() {
+        return this._resKey;
     }
 }

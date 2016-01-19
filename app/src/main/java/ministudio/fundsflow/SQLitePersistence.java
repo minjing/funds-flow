@@ -16,8 +16,8 @@ import java.util.List;
 
 import ministudio.fundsflow.domain.Account;
 import ministudio.fundsflow.domain.Domain;
-import ministudio.fundsflow.domain.TagCategory;
-import ministudio.fundsflow.domain.TagType;
+import ministudio.fundsflow.tag.TagCategory;
+import ministudio.fundsflow.tag.TagType;
 
 /**
  * Created by min on 15/12/25.
