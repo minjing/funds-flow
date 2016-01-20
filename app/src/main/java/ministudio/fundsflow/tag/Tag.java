@@ -29,12 +29,15 @@ public class Tag implements Domain {
     /*********************
      * Table Initializer *
      *********************/
+    public static final TagInitializer initializer = new TagInitializer();
+
     private static final class TagInitializer implements IPersistenceInitializer {
 
         private static final String STMT_CREATE_TABLE =
                 "create table " + TAB_NAME + "(" +
                         COL_ID + " integer primary key autoincrement, " +
-                        COL_TYPE_ID + " integer no null " +
+                        COL_TYPE_ID + " integer not null, " +
+                        COL_CAT_ID + " integer not null, " +
                         COL_NAME + " text not null " +
                         ")";
         private static final String STMT_DROP_TABLE = "drop table if exist " + TAB_NAME;
@@ -191,12 +194,15 @@ public class Tag implements Domain {
         SQLiteDatabase db = this._persistence.getWritableDatabase();
         if (this._id == UNDEFINED_ID) {
             // create
-            String stmt = "insert into " + TAB_NAME + " (" + COL_TYPE_ID + ", " + COL_NAME + ") values (?, ?)";
-            db.execSQL(stmt, new String[] { String.valueOf(this._typeId), this._name });
+            String stmt = "insert into " + TAB_NAME + " (" + COL_TYPE_ID + ", " + COL_CAT_ID + ", " + COL_NAME + ") values (?, ?, ?)";
+            db.execSQL(stmt, new String[] { String.valueOf(this._typeId), String.valueOf(this._catId), this._name });
         } else {
             // update
-            String stmt  = "update " + TAB_NAME + " set " + COL_TYPE_ID + " = ?, " + COL_NAME + " = ? where id = ?";
-            db.execSQL(stmt, new Object[] { String.valueOf(this._typeId), this._name, this._id });
+            String stmt  = "update " + TAB_NAME + " set " +
+                    COL_TYPE_ID + " = ?, " +
+                    COL_CAT_ID + " = ?, " +
+                    COL_NAME + " = ? where id = ?";
+            db.execSQL(stmt, new Object[] { String.valueOf(this._typeId), String.valueOf(this._catId), this._name, this._id });
         }
     }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="#eeeeee">
+
+    <TextView
+        android:id="@+id/tag_name_lab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:text="Tag Name"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/tag_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/tag_name_lab"
+        android:singleLine="true"
+        android:layout_marginStart="16dp" />
+
+    <Button
+        android:id="@+id/btn_save_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below ="@id/tag_name"
+        android:text="Save"/>
+
+    <Button
+        android:id="@+id/btn_del_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below ="@id/tag_name"
+        android:layout_toEndOf="@id/btn_save_tag"
+        android:text="Delete"/>
+
+    <Button
+        android:id="@+id/btn_cancel_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below ="@id/tag_name"
+        android:layout_alignParentEnd="true"
+        android:text="Cancel"/>
+</RelativeLayout >

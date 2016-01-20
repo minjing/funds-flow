@@ -16,6 +16,7 @@ import java.util.List;
 
 import ministudio.fundsflow.domain.Account;
 import ministudio.fundsflow.domain.Domain;
+import ministudio.fundsflow.tag.Tag;
 import ministudio.fundsflow.tag.TagCategory;
 import ministudio.fundsflow.tag.TagType;
 
@@ -32,7 +33,8 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         persistenceInitializers = new IPersistenceInitializer[] {
                 Account.initializer,
                 TagType.initializer,
-                TagCategory.initializer
+                TagCategory.initializer,
+                Tag.initializer
         };
     }
 

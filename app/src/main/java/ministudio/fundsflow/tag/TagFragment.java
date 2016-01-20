@@ -44,20 +44,21 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        this._tagListView = (ListView) this._activity.findViewById(R.id.tag_list);
-        this._tagListLayout = (SwipeRefreshLayout) this._activity.findViewById(R.id.tag_layout);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_tag, container, false);
+
+        this._tagListView = (ListView) rootView.findViewById(R.id.tag_list);
+        this._tagListLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.tag_layout);
         this._tagListLayout.setOnRefreshListener(this);
 
         Tag[] tags = Tag.findByType(this._persistence, this._tagTypeId);
         this._tagAdapter = new TagAdapter(this._activity, tags);
         this._tagListView.setAdapter(this._tagAdapter);
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tag, container, false);
+        return rootView;
     }
 
     @Override

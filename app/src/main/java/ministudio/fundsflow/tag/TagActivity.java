@@ -1,13 +1,17 @@
 package ministudio.fundsflow.tag;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.SQLitePersistence;
@@ -35,8 +39,14 @@ public class TagActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                View popupView = getLayoutInflater().inflate(R.layout.popup_tag, null);
+                PopupWindow popupWin = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                popupWin.setTouchable(true);
+                popupWin.setFocusable(true);
+                popupWin.setOutsideTouchable(true);
+                popupWin.setBackgroundDrawable(new ColorDrawable(0xeeeeee));
+                View rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+                popupWin.showAtLocation(rootView, Gravity.CENTER, 0, 0);
             }
         });
 

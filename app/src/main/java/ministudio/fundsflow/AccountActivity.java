@@ -61,11 +61,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), AccountAddActivity.class));
-//                Bundle bundle = new Bundle();
-//                bundle.putBoolean("create", true);
                 Intent intent = new Intent(getApplicationContext(), AccountAddActivity.class);
-//                intent.putExtra("create", true);
                 startActivityForResult(intent, RESULT_CANCELED);
             }
         });
