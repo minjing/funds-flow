@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="#eeeeee">
+    android:background="@drawable/popup_win">
 
     <TextView
         android:id="@+id/tag_name_lab"
@@ -24,18 +26,27 @@
         android:singleLine="true"
         android:layout_marginStart="16dp" />
 
+    <ListView
+        android:id="@+id/tag_cat_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tag_name"
+        android:minHeight="10dp"
+        tools:listitem="@android:layout/simple_list_item_1">
+    </ListView>
+
     <Button
         android:id="@+id/btn_save_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below ="@id/tag_name"
+        android:layout_below ="@id/tag_cat_list"
         android:text="Save"/>
 
     <Button
         android:id="@+id/btn_del_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below ="@id/tag_name"
+        android:layout_below ="@id/tag_cat_list"
         android:layout_toEndOf="@id/btn_save_tag"
         android:text="Delete"/>
 
@@ -43,7 +54,7 @@
         android:id="@+id/btn_cancel_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below ="@id/tag_name"
+        android:layout_below ="@id/tag_cat_list"
         android:layout_alignParentEnd="true"
         android:text="Cancel"/>
 </RelativeLayout >

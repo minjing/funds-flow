@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import ministudio.fundsflow.R;
@@ -40,7 +41,7 @@ public class TagActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 View popupView = getLayoutInflater().inflate(R.layout.popup_tag, null);
-                PopupWindow popupWin = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                PopupWindow popupWin = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
                 popupWin.setTouchable(true);
                 popupWin.setFocusable(true);
                 popupWin.setOutsideTouchable(true);
