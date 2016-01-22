@@ -30,7 +30,7 @@
         android:id="@+id/tag_cat_list_container"
         android:layout_below="@id/tag_name"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="240dp">
         <ListView
             android:id="@+id/tag_cat_list"
             android:layout_width="match_parent"
@@ -40,18 +40,35 @@
         </ListView>
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/tag_cat_add_container"
+        android:orientation="vertical"
+        android:layout_below="@id/tag_cat_list_container"
+        android:gravity="center"
+        android:layout_margin="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_tag_cat_add"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:padding="0dp"
+            android:textSize="10dp"
+            android:text="创建新的分类" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_save_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below ="@id/tag_cat_list_container"
+        android:layout_below ="@id/tag_cat_add_container"
         android:text="Save"/>
 
     <Button
         android:id="@+id/btn_del_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below ="@id/tag_cat_list_container"
+        android:layout_below ="@id/tag_cat_add_container"
         android:layout_toEndOf="@id/btn_save_tag"
         android:text="Delete"/>
 
@@ -59,7 +76,7 @@
         android:id="@+id/btn_cancel_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below ="@id/tag_cat_list_container"
+        android:layout_below ="@id/tag_cat_add_container"
         android:layout_alignParentEnd="true"
         android:text="Cancel"/>
 </RelativeLayout >
