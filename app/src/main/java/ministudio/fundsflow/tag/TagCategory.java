@@ -30,13 +30,15 @@ public class TagCategory implements Domain {
                     COL_ID + " integer primary key, " +
                     COL_NAME + " text not null " +
                 ")";
+        private static final String STMT_DEFALUT_VALUE =
+                "insert into " + TAB_NAME + " (" + COL_ID + ", " + COL_NAME + ") values (0, 'Default Category')";
         private static final String STMT_DROP_TABLE  = "drop table if exist " + TAB_NAME;
 
         private TagCategoryInitializer() { }
 
         @Override
         public String[] getCreateStatement() {
-            return new String[] { STMT_CREATE_TABLE };
+            return new String[] { STMT_CREATE_TABLE, STMT_DEFALUT_VALUE };
         }
 
         @Override
