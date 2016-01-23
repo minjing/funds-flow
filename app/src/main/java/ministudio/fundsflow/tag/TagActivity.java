@@ -42,7 +42,10 @@ public class TagActivity extends AppCompatActivity {
 
     private SQLitePersistence _persistence;
 
+    private ViewPagerAdapter _tagTypeListAdapter;
     private TagCategoryListAdapter _tagCatListAdapter;
+
+    private int _selectedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +58,24 @@ public class TagActivity extends AppCompatActivity {
         this._persistence = new SQLitePersistence(this);
 
         this._tagViewPager = (ViewPager) findViewById(R.id.tag_viewpager);
-        this._tagViewPager.setAdapter(initTagFragments());
+        this._tagViewPager.setAdapter(initTagTypeFragments());
+        this._tagViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+
+            @Override
+            public void onPageSelected(int position) {
+                TagActivity.this._selectedType = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
 
         this._tabLayout = (TabLayout) findViewById(R.id.tag_tab);
         this._tabLayout.setupWithViewPager(this._tagViewPager);
 
-        TagCategory[] tagCats = TagCategory.findAll(this._persistence);
+        TagCategory[] tagCats = TagCategory.findByType(this._persistence, this._tagTypeListAdapter.getItem(this._selectedType).getId());
         this._tagCatListAdapter = new TagCategoryListAdapter(this, tagCats);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -131,17 +146,17 @@ public class TagActivity extends AppCompatActivity {
         });
     }
 
-    private ViewPagerAdapter initTagFragments() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
+    private ViewPagerAdapter initTagTypeFragments() {
+        this._tagTypeListAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
         TagType[] types = TagType.findAll(this._persistence);
         for (TagType type : types) {
             TagFragment tagFragment = new TagFragment();
             tagFragment.setTypeId(type.getId());
             tagFragment.setPersistence(this._persistence);
             tagFragment.setActivity(this);
-            adapter.addFragment(tagFragment, type.getResourceKey());
+            this._tagTypeListAdapter.addFragment(tagFragment, type.getResourceKey());
         }
-        return adapter;
+        return this._tagTypeListAdapter;
     }
 
     private static final class TagCategoryListAdapter extends BaseAdapter {

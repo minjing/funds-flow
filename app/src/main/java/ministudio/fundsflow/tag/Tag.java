@@ -195,14 +195,14 @@ public class Tag implements Domain {
         if (this._id == UNDEFINED_ID) {
             // create
             String stmt = "insert into " + TAB_NAME + " (" + COL_TYPE_ID + ", " + COL_CAT_ID + ", " + COL_NAME + ") values (?, ?, ?)";
-            db.execSQL(stmt, new String[] { String.valueOf(this._typeId), String.valueOf(this._catId), this._name });
+            db.execSQL(stmt, new Object[] { this._typeId, this._catId, this._name });
         } else {
             // update
             String stmt  = "update " + TAB_NAME + " set " +
                     COL_TYPE_ID + " = ?, " +
                     COL_CAT_ID + " = ?, " +
                     COL_NAME + " = ? where id = ?";
-            db.execSQL(stmt, new Object[] { String.valueOf(this._typeId), String.valueOf(this._catId), this._name, this._id });
+            db.execSQL(stmt, new Object[] { this._typeId, this._catId, this._name, this._id });
         }
     }
 }

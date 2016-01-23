@@ -38,6 +38,9 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         };
     }
 
+    private SQLiteDatabase _readableDb;
+    private SQLiteDatabase _writableDb;
+
     public SQLitePersistence(Context ctx) {
         super(ctx, dbName, null, dbVersion);
     }
@@ -77,6 +80,33 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    @Override
+    public SQLiteDatabase getReadableDatabase() {
+        if (this._readableDb == null) {
+            this._readableDb = super.getReadableDatabase();
+        }
+        return this._readableDb;
+    }
+
+    @Override
+    public SQLiteDatabase getWritableDatabase() {
+        if (this._writableDb == null) {
+            this._writableDb = super.getWritableDatabase();
+        }
+        return this._writableDb;
+    }
+
+    public void close() {
+        if (this._readableDb != null) {
+            this._readableDb.close();
+        }
+        this._readableDb = null;
+        if (this._writableDb != null) {
+            this._writableDb.close();
+        }
+        this._writableDb = null;
+    }
+
     public <T extends Domain> T findById(String tableName, int id, IDomainCreator<T> creator) {
         if (Strings.isNullOrEmpty(tableName)) {
             throw new IllegalArgumentException("The argument is required - tableName");
@@ -105,28 +135,23 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         }
         SQLiteDatabase db = getReadableDatabase();
         String stmt = "select * from " + tableName;
-        Cursor cursor = db.rawQuery(stmt, new String[0]);
+        Cursor cursor = null;
         List<T> domains;
-        if (cursor.moveToFirst()) {
-            domains = new ArrayList<>();
-            do {
-                domains.add(creator.create(this, cursor));
-            } while (cursor.moveToNext());
-        } else {
-            domains = Collections.emptyList();
+        try {
+            cursor = db.rawQuery(stmt, new String[0]);
+            if (cursor.moveToFirst()) {
+                domains = new ArrayList<>();
+                do {
+                    domains.add(creator.create(this, cursor));
+                } while (cursor.moveToNext());
+            } else {
+                domains = Collections.emptyList();
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        cursor.close();
-        db.close();
-
-//        Type[] superTypes = creator.getClass().getGenericInterfaces();
-//        Type genericType = null;
-//        for (Type superType : superTypes) {
-//            if (!ParameterizedType.class.isAssignableFrom(superType.getClass())) {
-//                continue;
-//            }
-//            genericType = ((ParameterizedType)superType).getActualTypeArguments()[0];
-//        }
-//        Class<?> domainClass = (Class<T>)ReflectionUtil.getClass(genericType);
 
         return domains.toArray((T[]) Array.newInstance(creator.getDomainClass(), domains.size()));
     }
