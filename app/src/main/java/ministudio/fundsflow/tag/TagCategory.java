@@ -74,6 +74,34 @@ public class TagCategory implements Domain {
         return persistence.findById(TAB_NAME, id, creator);
     }
 
+    public static TagCategory findByName(SQLitePersistence persistence, String name) {
+        if (persistence == null) {
+            throw new IllegalArgumentException("The argument is required - persistence");
+        }
+        if (Strings.isNullOrEmpty(name)) {
+            throw new IllegalArgumentException("The argument is required - name");
+        }
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        String stmt = "select * from " + TAB_NAME + " where " + COL_NAME + " = ?";
+        try {
+            db = persistence.getReadableDatabase();
+            cursor = db.rawQuery(stmt, new String[]{name});
+            if (cursor.moveToFirst()) {
+                return creator.create(persistence, cursor);
+            } else {
+                return null;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            if  (db != null) {
+                db.close();
+            }
+        }
+    }
+
     public static TagCategory[] findAll(SQLitePersistence persistence) {
         if (persistence == null) {
             throw new IllegalArgumentException("The argument is required - persistence");
@@ -92,7 +120,7 @@ public class TagCategory implements Domain {
      * Domain related fields and methods *
      *************************************/
     private final SQLitePersistence _persistence;
-    private int _id;
+    private int _id = UNDEFINED_ID;
     private String _name;
 
     public TagCategory(SQLitePersistence persistence) {
@@ -101,6 +129,8 @@ public class TagCategory implements Domain {
         }
         this._persistence = persistence;
     }
+
+
 
     public TagCategory(SQLitePersistence persistence, int id, String name) {
         this(persistence);
@@ -126,7 +156,10 @@ public class TagCategory implements Domain {
         this._name = name;
     }
 
-    public void save() {
+    public int save() {
+        if (findByName(this._persistence, this._name) != null) {
+            return 0;
+        }
         SQLiteDatabase db = this._persistence.getWritableDatabase();
         if (this._id == UNDEFINED_ID) {
             // create
@@ -137,5 +170,6 @@ public class TagCategory implements Domain {
             String stmt  = "update " + TAB_NAME + " set " + COL_NAME + " = ? where id = ?";
             db.execSQL(stmt, new Object[] { this._name, this._id });
         }
+        return 1;
     }
 }

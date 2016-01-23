@@ -4,17 +4,26 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -33,7 +42,6 @@ public class TagActivity extends AppCompatActivity {
 
     private SQLitePersistence _persistence;
 
-    private ListView _tagCatListView;
     private TagCategoryListAdapter _tagCatListAdapter;
 
     @Override
@@ -55,25 +63,62 @@ public class TagActivity extends AppCompatActivity {
         TagCategory[] tagCats = TagCategory.findAll(this._persistence);
         this._tagCatListAdapter = new TagCategoryListAdapter(this, tagCats);
 
-//        this._tagCatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-//                Intent intent = new Intent(getApplicationContext(), AccountAddActivity.class);
-//                intent.putExtra(AccountAddActivity.ARG_ACCOUNT_ID, id);
-//                startActivityForResult(intent, RESULT_CANCELED);
-//            }
-//        });
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View popupView = getLayoutInflater().inflate(R.layout.popup_tag, null);
+                final View popupView = getLayoutInflater().inflate(R.layout.popup_tag, null);
                 ListView tagCatListView = (ListView) popupView.findViewById(R.id.tag_cat_list);
                 tagCatListView.setAdapter(TagActivity.this._tagCatListAdapter);
-//                ViewGroup.LayoutParams params = tagCatListView.getLayoutParams();
-//                params.height = getWindowManager().getDefaultDisplay().getHeight() - 30;
-//                tagCatListView.setLayoutParams(params);
+                tagCatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                        TagActivity.this._tagCatListAdapter.select(pos);
+                        TagActivity.this._tagCatListAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                Button btnCreateCat = (Button) popupView.findViewById(R.id.btn_tag_cat_add);
+                btnCreateCat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final LinearLayout layout = (LinearLayout) popupView.findViewById(R.id.tag_cat_add_container);
+                        final EditText editTxt = new EditText(TagActivity.this);
+                        editTxt.setSingleLine();
+                        editTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+                        editTxt.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT);
+                        layout.addView(editTxt, 0, params);
+
+                        editTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+
+                                    EditText editTxt = (EditText) v;
+                                    String newName = editTxt.getText().toString();
+                                    TagCategory tagCat = new TagCategory(TagActivity.this._persistence);
+                                    tagCat.setName(newName);
+                                    int count = tagCat.save();
+                                    if (count == 0) {
+                                        Snackbar.make(popupView, "Tat category exists", Snackbar.LENGTH_LONG).show();
+                                        return true;
+                                    }
+                                    TagActivity.this._tagCatListAdapter.update(TagCategory.findAll(TagActivity.this._persistence));
+                                    TagActivity.this._tagCatListAdapter.notifyDataSetChanged();
+
+                                    // remove text box
+                                    layout.removeView(editTxt);
+                                }
+                                return false;
+                            }
+                        });
+                    }
+                });
 
                 PopupWindow popupWin = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
                 popupWin.setTouchable(true);
@@ -103,6 +148,7 @@ public class TagActivity extends AppCompatActivity {
 
         private TagCategory[] _tagCats;
         private final Context _ctx;
+        private int _selectedPos;
 
         TagCategoryListAdapter(Context context, TagCategory[] tagCategories) {
             this._ctx = context;
@@ -111,6 +157,10 @@ public class TagActivity extends AppCompatActivity {
 
         void update(TagCategory[] tagCategories) {
             this._tagCats = tagCategories;
+        }
+
+        void select(int pos) {
+            this._selectedPos = pos;
         }
 
         @Override
@@ -136,16 +186,23 @@ public class TagActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.tag_cat_list, null);
                 holder = new Holder();
                 holder._labTagCatName = (TextView) convertView.findViewById(R.id.tag_cat_name);
+                holder._imgTagCat = (ImageView) convertView.findViewById(R.id.item_selection);
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();
             }
             holder._labTagCatName.setText(this._tagCats[position].getName());
+            if (position == this._selectedPos) {
+                holder._imgTagCat.setImageResource(R.mipmap.ic_check_circle_black_18dp);
+            } else {
+                holder._imgTagCat.setImageResource(R.mipmap.ic_check_circle_white_18dp);
+            }
             return convertView;
         }
     }
 
     private static final class Holder {
         private TextView _labTagCatName;
+        private ImageView _imgTagCat;
     }
 }
