@@ -19,7 +19,7 @@
         android:textSize="20dp"/>
 
     <EditText
-        android:id="@+id/tag_name"
+        android:id="@+id/txt_tag_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/tag_name_lab"
@@ -34,7 +34,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="0dp"
-        android:layout_below="@id/tag_name"
+        android:layout_below="@id/txt_tag_name"
         tools:listitem="@android:layout/simple_list_item_1">
     </ListView>
 

@@ -79,6 +79,12 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         this._tagAdapter.notifyDataSetChanged();
     }
 
+    void updateTagList() {
+        Tag[] tags = Tag.findByType(this._persistence, this._tagTypeId);
+        this._tagAdapter.update(tags);
+        this._tagAdapter.notifyDataSetChanged();
+    }
+
     private static final class TagAdapter extends BaseAdapter {
 
         private Tag[] _tags;
@@ -115,7 +121,7 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                 LayoutInflater inflater = LayoutInflater.from(this._ctx);
                 convertView = inflater.inflate(R.layout.tag_list, null);
                 holder = new Holder();
-                holder._labTagName = (TextView) convertView.findViewById(R.id.account_name);
+                holder._labTagName = (TextView) convertView.findViewById(R.id.tag_name);
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();

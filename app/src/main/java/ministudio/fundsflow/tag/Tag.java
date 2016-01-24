@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ministudio.fundsflow.ArgumentValidator;
 import ministudio.fundsflow.DomainHelper;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
@@ -91,9 +92,8 @@ public class Tag implements Domain {
     }
 
     public static Tag[] findByType(SQLitePersistence persistence, int typeId) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required = persistence");
-        }
+        ArgumentValidator.checkNull(persistence, "persistence");
+
         SQLiteDatabase db = persistence.getReadableDatabase();
         String stmt = "select * from " + TAB_NAME + " where " + COL_TYPE_ID + " = ?";
         Cursor cursor = null;
@@ -105,15 +105,26 @@ public class Tag implements Domain {
                 cursor.close();
             }
         }
-//        if (cursor.moveToFirst()) {
-//            domains = new ArrayList<>();
-//            do {
-//                domains.add(creator.create(persistence, cursor));
-//            } while (cursor.moveToNext());
-//        } else {
-//            domains = Collections.emptyList();
-//        }
-//        return domains.toArray(new Tag[domains.size()]);
+    }
+
+    public static Tag find(SQLitePersistence persistence, int typeId, String name) {
+        ArgumentValidator.checkNull(persistence, "persistence");
+
+        SQLiteDatabase db = persistence.getReadableDatabase();
+        String stmt = "select * from " + TAB_NAME + " where " + COL_TYPE_ID + " = ? and " + COL_NAME + " = ?";
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(stmt, new String[] { String.valueOf(typeId), name });
+            if (cursor.moveToFirst()) {
+                return creator.create(persistence, cursor);
+            } else {
+                return null;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     public static void delete(SQLitePersistence persistence, int id) {
@@ -177,6 +188,10 @@ public class Tag implements Domain {
         } else {
             this._typeId = type.getId();
         }
+    }
+
+    public void setType(int typeId) {
+        this._typeId = typeId;
     }
 
     public TagCategory getCategory() {
