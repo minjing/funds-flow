@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ministudio.fundsflow.DomainHelper;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
@@ -95,20 +96,24 @@ public class Tag implements Domain {
         }
         SQLiteDatabase db = persistence.getReadableDatabase();
         String stmt = "select * from " + TAB_NAME + " where " + COL_TYPE_ID + " = ?";
-        Cursor cursor = db.rawQuery(stmt, new String[]{String.valueOf(typeId)});
-        List<Tag> domains;
-        if (cursor.moveToFirst()) {
-            domains = new ArrayList<>();
-            do {
-                domains.add(creator.create(persistence, cursor));
-            } while (cursor.moveToNext());
-        } else {
-            domains = Collections.emptyList();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(stmt, new String[] { String.valueOf(typeId) });
+            return DomainHelper.createDomains(persistence, cursor, creator);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        cursor.close();
-        db.close();
-
-        return domains.toArray(new Tag[domains.size()]);
+//        if (cursor.moveToFirst()) {
+//            domains = new ArrayList<>();
+//            do {
+//                domains.add(creator.create(persistence, cursor));
+//            } while (cursor.moveToNext());
+//        } else {
+//            domains = Collections.emptyList();
+//        }
+//        return domains.toArray(new Tag[domains.size()]);
     }
 
     public static void delete(SQLitePersistence persistence, int id) {

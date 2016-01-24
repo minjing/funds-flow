@@ -23,7 +23,11 @@ Basic Version Feature List
     -   [ ] Tag only contains its name
     -   [ ] Create / Modify / Delete Tag
     -   [ ] Tag Category
-        -   [ ] Default Category - Account Tag, Trading Tag
+        -   [ ] Tag Category is associate with Tag Type
+        -   [ ] Tag Category create/modify/delete
+    -   [x] Tag Type
+        -   [x] Two types - Account Tag Type, Trading Tag Type
+        -   [x] User can't create/modify/delete Tag Type
 1.  Budget
     -   [ ] Yearly Budget Setting
         -   [ ] Budget Settings based on Tag Category

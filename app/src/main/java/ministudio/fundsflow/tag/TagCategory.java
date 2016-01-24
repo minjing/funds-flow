@@ -36,7 +36,7 @@ public class TagCategory implements Domain {
         private static final String STMT_CREATE_TABLE =
                 "create table " + TAB_NAME + " (" +
                     COL_ID + " integer primary key, " +
-                    COL_NAME + " text not null " +
+                    COL_NAME + " text not null, " +
                     COL_TYPE_ID + " integer not null " +
                 ")";
         private static final String STMT_DROP_TABLE  = "drop table if exist " + TAB_NAME;
@@ -177,6 +177,10 @@ public class TagCategory implements Domain {
         } else {
             this._typeId = type.getId();
         }
+    }
+
+    public void setType(int typeId) {
+        this._typeId = typeId;
     }
 
     public int save() {

@@ -31,11 +31,15 @@ public final class ViewPagerAdapter extends FragmentPagerAdapter {
         return this._fragmentInfos.size();
     }
 
-    public void addFragment(Fragment fragment, String resourceKey) {
+    public void addFragment(Fragment fragment, int id, String resourceKey) {
         int resId = this._ctx.getResources().getIdentifier(resourceKey, "string", this._ctx.getPackageName());
         String title = this._ctx.getString(resId);
-        FragmentInfo fragmentInfo = new FragmentInfo(fragment, title);
+        FragmentInfo fragmentInfo = new FragmentInfo(fragment, id, title);
         this._fragmentInfos.add(fragmentInfo);
+    }
+
+    public long getItemId(int position) {
+        return this._fragmentInfos.get(position).getId();
     }
 
     @Override

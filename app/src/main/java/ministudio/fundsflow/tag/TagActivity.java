@@ -28,8 +28,11 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
+
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.SQLitePersistence;
+import ministudio.fundsflow.UIHelper;
 import ministudio.fundsflow.ViewPagerAdapter;
 
 /**
@@ -43,7 +46,7 @@ public class TagActivity extends AppCompatActivity {
     private SQLitePersistence _persistence;
 
     private ViewPagerAdapter _tagTypeListAdapter;
-    private TagCategoryListAdapter _tagCatListAdapter;
+//    private TagCategoryListAdapter _tagCatListAdapter;
 
     private int _selectedType;
 
@@ -75,21 +78,22 @@ public class TagActivity extends AppCompatActivity {
         this._tabLayout = (TabLayout) findViewById(R.id.tag_tab);
         this._tabLayout.setupWithViewPager(this._tagViewPager);
 
-        TagCategory[] tagCats = TagCategory.findByType(this._persistence, this._tagTypeListAdapter.getItem(this._selectedType).getId());
-        this._tagCatListAdapter = new TagCategoryListAdapter(this, tagCats);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final View popupView = getLayoutInflater().inflate(R.layout.popup_tag, null);
                 ListView tagCatListView = (ListView) popupView.findViewById(R.id.tag_cat_list);
-                tagCatListView.setAdapter(TagActivity.this._tagCatListAdapter);
+                TagCategory[] tagCats = TagCategory.findByType(
+                        TagActivity.this._persistence,
+                        (int) TagActivity.this._tagTypeListAdapter.getItemId(TagActivity.this._selectedType));
+                final TagCategoryListAdapter tagCatListAdapter = new TagCategoryListAdapter(TagActivity.this, tagCats);
+                tagCatListView.setAdapter(tagCatListAdapter);
                 tagCatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                        TagActivity.this._tagCatListAdapter.select(pos);
-                        TagActivity.this._tagCatListAdapter.notifyDataSetChanged();
+                        tagCatListAdapter.select(pos);
+                        tagCatListAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -116,15 +120,22 @@ public class TagActivity extends AppCompatActivity {
 
                                     EditText editTxt = (EditText) v;
                                     String newName = editTxt.getText().toString();
-                                    TagCategory tagCat = new TagCategory(TagActivity.this._persistence);
-                                    tagCat.setName(newName);
-                                    int count = tagCat.save();
-                                    if (count == 0) {
-                                        Snackbar.make(popupView, "Tat category exists", Snackbar.LENGTH_LONG).show();
+                                    if (Strings.isNullOrEmpty(newName)) {
+                                        UIHelper.showMessage(editTxt, "Tag Category Name must be specified");
                                         return true;
                                     }
-                                    TagActivity.this._tagCatListAdapter.update(TagCategory.findAll(TagActivity.this._persistence));
-                                    TagActivity.this._tagCatListAdapter.notifyDataSetChanged();
+
+                                    int selectedType = (int) TagActivity.this._tagTypeListAdapter.getItemId(TagActivity.this._selectedType);
+                                    TagCategory tagCat = new TagCategory(TagActivity.this._persistence);
+                                    tagCat.setName(newName);
+                                    tagCat.setType(selectedType);
+                                    int count = tagCat.save();
+                                    if (count == 0) {
+                                        UIHelper.showMessage(popupView, "Tat category exists");
+                                        return true;
+                                    }
+                                    tagCatListAdapter.update(TagCategory.findByType(TagActivity.this._persistence, selectedType));
+                                    tagCatListAdapter.notifyDataSetChanged();
 
                                     // remove text box
                                     layout.removeView(editTxt);
@@ -132,6 +143,10 @@ public class TagActivity extends AppCompatActivity {
                                 return false;
                             }
                         });
+                        editTxt.setFocusable(true);
+                        editTxt.setFocusableInTouchMode(true);
+                        editTxt.requestFocus();
+                        editTxt.requestFocusFromTouch();
                     }
                 });
 
@@ -154,7 +169,7 @@ public class TagActivity extends AppCompatActivity {
             tagFragment.setTypeId(type.getId());
             tagFragment.setPersistence(this._persistence);
             tagFragment.setActivity(this);
-            this._tagTypeListAdapter.addFragment(tagFragment, type.getResourceKey());
+            this._tagTypeListAdapter.addFragment(tagFragment, type.getId(), type.getResourceKey());
         }
         return this._tagTypeListAdapter;
     }

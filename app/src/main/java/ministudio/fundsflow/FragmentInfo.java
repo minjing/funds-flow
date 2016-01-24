@@ -11,8 +11,9 @@ public final class FragmentInfo {
 
     private final Fragment _fragment;
     private final String _title;
+    private final int _id;
 
-    public FragmentInfo(Fragment fragment, String title) {
+    public FragmentInfo(Fragment fragment, int id, String title) {
         if (fragment == null) {
             throw new IllegalArgumentException("The argument is required - fragment");
         }
@@ -21,11 +22,16 @@ public final class FragmentInfo {
         }
 
         this._fragment = fragment;
+        this._id = id;
         this._title = title;
     }
 
     public Fragment getFragment() {
         return this._fragment;
+    }
+
+    public int getId() {
+        return this._id;
     }
 
     public String getTitle() {

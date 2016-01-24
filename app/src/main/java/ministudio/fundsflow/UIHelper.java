@@ -10,12 +10,13 @@ public final class UIHelper {
 
     public static void showMessage(final View view, final String message) {
         final Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
-        snackbar.setAction("Ignore", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        }).show();
+//        snackbar.setAction("Ignore", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                snackbar.dismiss();
+//            }
+//        }).show();
+        snackbar.show();
     }
 
     private UIHelper() { }
