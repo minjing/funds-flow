@@ -25,17 +25,27 @@ import com.google.common.base.Strings;
 
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.UIHelper;
+import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by min on 16/1/24.
  */
 final class TagEditor {
 
-    void createUI(final TagActivity activity, final int typeId) {
+    void createUI(final TagActivity activity, final int typeId, final Tag tag) {
         final View popupView = activity.getLayoutInflater().inflate(R.layout.popup_tag, null);
+
+        final EditText txtTagName = (EditText) popupView.findViewById(R.id.txt_tag_name);
+        if (tag != null) {
+            txtTagName.setText(tag.getName());
+        }
+
         ListView tagCatListView = (ListView) popupView.findViewById(R.id.tag_cat_list);
         TagCategory[] tagCats = TagCategory.findByType(activity.getPersistence(), typeId);
         final TagCategoryListAdapter tagCatListAdapter = new TagCategoryListAdapter(activity, tagCats);
+        if (tag != null) {
+            tagCatListAdapter.select(tag.getCategory());
+        }
         tagCatListView.setAdapter(tagCatListAdapter);
         tagCatListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,28 +120,50 @@ final class TagEditor {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText txt = (EditText) popupView.findViewById(R.id.txt_tag_name);
-                String newTagName = txt.getText().toString();
+                String newTagName = txtTagName.getText().toString();
                 if (Strings.isNullOrEmpty(newTagName)) {
                     UIHelper.showMessage(v, "The tag name is required");
                     return;
                 }
-                if (Tag.find(activity.getPersistence(), typeId, newTagName) != null) {
-                    UIHelper.showMessage(v, "The new tag name exist");
-                    return;
-                }
+                Tag existingTag = Tag.find(activity.getPersistence(), typeId, newTagName);
                 TagCategory tagCat = tagCatListAdapter.getSelectedCategory();
-                Tag tag = new Tag(activity.getPersistence(), newTagName);
-                tag.setType(typeId);
-                tag.setCategory(tagCat);
-                tag.save();
-
+                if (tag != null) {
+                    // Update tag
+                    if (existingTag != null && existingTag.getId() != tag.getId()) {
+                        UIHelper.showMessage(v, "The tag name is duplicated");
+                        return;
+                    }
+                    tag.setName(newTagName);
+                    tag.setCategory(tagCat);
+                    tag.save();
+                } else {
+                    // Create new tag
+                    if (existingTag != null) {
+                        UIHelper.showMessage(v, "The new tag name exist");
+                        return;
+                    }
+                    Tag tag = new Tag(activity.getPersistence(), newTagName);
+                    tag.setType(typeId);
+                    tag.setCategory(tagCat);
+                    tag.save();
+                }
                 popupWin.dismiss();
                 // Refresh tag fragment
                 activity.getCurrentFragment().updateTagList();
             }
         });
         Button btnDelete = (Button) popupView.findViewById(R.id.btn_del_tag);
+        if (tag == null) {
+            btnDelete.setEnabled(false);
+        } else {
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Tag.delete(activity.getPersistence(), tag.getId());
+                    activity.getCurrentFragment().updateTagList();
+                }
+            });
+        }
         Button btnCancel = (Button) popupView.findViewById(R.id.btn_cancel_tag);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +190,18 @@ final class TagEditor {
 
         void select(int pos) {
             this._selectedPos = pos;
+        }
+
+        void select(TagCategory tagCategory) {
+            if (tagCategory == null) {
+                return;
+            }
+            for (int i = 0; i < this._tagCats.length; i++) {
+                if (this._tagCats[i].getId() == tagCategory.getId()) {
+                    select(i);
+                    break;
+                }
+            }
         }
 
         TagCategory getSelectedCategory() {

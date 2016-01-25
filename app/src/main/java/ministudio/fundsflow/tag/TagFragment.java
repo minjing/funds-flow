@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,14 +23,14 @@ import ministudio.fundsflow.SQLitePersistence;
 public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private SQLitePersistence _persistence;
-    private Activity _activity;
+    private TagActivity _activity;
     private int _tagTypeId;
 
     private SwipeRefreshLayout _tagListLayout;
     private ListView _tagListView;
     private TagAdapter _tagAdapter;
 
-    void setActivity(Activity activity) {
+    void setActivity(TagActivity activity) {
         this._activity = activity;
     }
 
@@ -57,6 +58,13 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
         Tag[] tags = Tag.findByType(this._persistence, this._tagTypeId);
         this._tagAdapter = new TagAdapter(this._activity, tags);
         this._tagListView.setAdapter(this._tagAdapter);
+        this._tagListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                Tag tag = (Tag) TagFragment.this._tagAdapter.getItem(pos);
+                new TagEditor().createUI(TagFragment.this._activity, TagFragment.this._tagTypeId, tag);
+            }
+        });
 
         return rootView;
     }

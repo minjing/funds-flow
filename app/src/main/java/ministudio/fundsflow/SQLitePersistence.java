@@ -122,7 +122,6 @@ public class SQLitePersistence extends SQLiteOpenHelper {
             domain = creator.create(this, cursor);
         }
         cursor.close();
-        db.close();
         return domain;
     }
 
@@ -160,6 +159,5 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String stmt = "delete from " + tableName + " where " + Domain.COL_ID + " = ?";
         db.execSQL(stmt, new Object[] { id });
-        db.close();
     }
 }
