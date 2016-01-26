@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ministudio.fundsflow.account.AccountActivity;
 import ministudio.fundsflow.tag.TagActivity;
 
 public class OutlineActivity extends AppCompatActivity

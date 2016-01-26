@@ -1,4 +1,4 @@
-package ministudio.fundsflow;
+package ministudio.fundsflow.account;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,9 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import ministudio.fundsflow.domain.Account;
+import ministudio.fundsflow.R;
+import ministudio.fundsflow.SQLitePersistence;
+import ministudio.fundsflow.UIHelper;
 
 public class AccountActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 

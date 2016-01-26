@@ -19,6 +19,6 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:layout_margin="8dp"
-        android:text="Text" />
+        android:text="@string/placeholder" />
 
 </LinearLayout>

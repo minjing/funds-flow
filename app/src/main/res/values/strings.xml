@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Funds Flow</string>
+    <string name="placeholder">Placeholder</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,8 +15,11 @@
     <string name="title_activity_account_add">Add Account</string>
     <string name="label_account_name">Account Name</string>
     <string name="label_save">Save</string>
+    <string name="label_delete">Delete</string>
     <string name="label_cancel">Cancel</string>
-    <string name="title_activity_tag">Tag Management</string>
+    <string name="title_activity_tag">Tag List</string>
+    <string name="label_tag_name">Tag Name</string>
+    <string name="label_new_category">New Category</string>
 
     <string name="title_tag_type_account">Account Tags</string>
     <string name="title_tag_type_trading">Trading Tags</string>

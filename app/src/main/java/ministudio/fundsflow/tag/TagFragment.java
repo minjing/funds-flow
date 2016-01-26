@@ -130,16 +130,24 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
                 convertView = inflater.inflate(R.layout.tag_list, null);
                 holder = new Holder();
                 holder._labTagName = (TextView) convertView.findViewById(R.id.tag_name);
+                holder._labTagCat = (TextView) convertView.findViewById(R.id.tag_cat_name);
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();
             }
             holder._labTagName.setText(this._tags[position].getName());
+            TagCategory tagCat = this._tags[position].getCategory();
+            if (tagCat != null) {
+                holder._labTagCat.setText(tagCat.getName());
+            } else {
+                holder._labTagCat.setText("");
+            }
             return convertView;
         }
     }
 
     private static final class Holder {
         private TextView _labTagName;
+        private TextView _labTagCat;
     }
 }

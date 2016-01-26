@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">资金流</string>
+    <string name="placeholder">占位符</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_outline">Outline</string>
+    <string name="action_account">账户管理</string>
+    <string name="action_tag">标签管理</string>
+    <string name="action_budget">预算管理</string>
+    <string name="action_statistic">统计分析</string>
+    <string name="action_settings">设置</string>
+    <string name="title_activity_account">账户列表</string>
+    <string name="title_activity_account_add">添加账户</string>
+    <string name="label_account_name">账户名称</string>
+    <string name="label_save">保存</string>
+    <string name="label_delete">删除</string>
+    <string name="label_cancel">取消</string>
+    <string name="title_activity_tag">标签列表</string>
+    <string name="label_tag_name">标签名称</string>
+    <string name="label_new_category">新分类</string>
+
+    <string name="title_tag_type_account">账户标签</string>
+    <string name="title_tag_type_trading">交易标签</string>
+</resources>

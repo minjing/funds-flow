@@ -1,4 +1,4 @@
-package ministudio.fundsflow;
+package ministudio.fundsflow.account;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,8 @@ import android.widget.EditText;
 
 import com.google.common.base.Strings;
 
-import ministudio.fundsflow.domain.Account;
+import ministudio.fundsflow.R;
+import ministudio.fundsflow.SQLitePersistence;
 
 public class AccountAddActivity extends AppCompatActivity {
 

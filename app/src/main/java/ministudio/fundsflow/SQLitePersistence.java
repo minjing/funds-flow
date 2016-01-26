@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ministudio.fundsflow.domain.Account;
+import ministudio.fundsflow.account.Account;
 import ministudio.fundsflow.domain.Domain;
 import ministudio.fundsflow.tag.Tag;
 import ministudio.fundsflow.tag.TagCategory;
@@ -158,6 +158,6 @@ public class SQLitePersistence extends SQLiteOpenHelper {
     public void delete(String tableName, int id) {
         SQLiteDatabase db = getWritableDatabase();
         String stmt = "delete from " + tableName + " where " + Domain.COL_ID + " = ?";
-        db.execSQL(stmt, new Object[] { id });
+        db.execSQL(stmt, new Object[]{id});
     }
 }

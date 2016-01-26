@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="8dp"
-        android:text="Tag Name"
+        android:text="@string/label_tag_name"
         android:textStyle="bold"
         android:textSize="20dp"/>
 
@@ -55,7 +55,7 @@
             android:layout_height="32dp"
             android:padding="2dp"
             android:textSize="10dp"
-            android:text="New Category" />
+            android:text="@string/label_new_category" />
     </LinearLayout>
 
     <Button
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below ="@id/tag_cat_add_container"
-        android:text="Save"/>
+        android:text="@string/label_save"/>
 
     <Button
         android:id="@+id/btn_del_tag"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_below ="@id/tag_cat_add_container"
         android:layout_toEndOf="@id/btn_save_tag"
-        android:text="Delete"/>
+        android:text="@string/label_delete"/>
 
     <Button
         android:id="@+id/btn_cancel_tag"
@@ -79,5 +79,5 @@
         android:layout_height="wrap_content"
         android:layout_below ="@id/tag_cat_add_container"
         android:layout_alignParentEnd="true"
-        android:text="Cancel"/>
+        android:text="@string/label_cancel"/>
 </RelativeLayout >
