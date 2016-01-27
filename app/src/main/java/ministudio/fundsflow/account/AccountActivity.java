@@ -1,17 +1,13 @@
 package ministudio.fundsflow.account;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,12 +17,9 @@ import android.widget.TextView;
 
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.UIHelper;
-import ministudio.fundsflow.domain.Domain;
 
 public class AccountActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private ListView accountListView;
     private SwipeRefreshLayout accountListLayout;
 
     private SQLitePersistence persistence;
@@ -39,16 +32,16 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        accountListView = (ListView) findViewById(R.id.account_list);
         this.accountListLayout = (SwipeRefreshLayout) findViewById(R.id.account_layout);
         this.accountListLayout.setOnRefreshListener(this);
 
         this.persistence = new SQLitePersistence(this);
         Account[] accounts = Account.getAll(persistence);
-        this.accountAdapter = new AccountAdapter(this, accounts);
-        this.accountListView.setAdapter(this.accountAdapter);
+        accountAdapter = new AccountAdapter(this, accounts);
 
-        this.accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView accountListView = (ListView) findViewById(R.id.account_list);
+        accountListView.setAdapter(this.accountAdapter);
+        accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 new AccountEditor().createUI(AccountActivity.this, (Account) AccountActivity.this.accountAdapter.getItem(pos));
@@ -62,8 +55,6 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
                 new AccountEditor().createUI(AccountActivity.this, null);
             }
         });
-
-//        registerForContextMenu(this.accountListView);
     }
 
     @Override
@@ -83,43 +74,6 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountAdapter.update(Account.getAll(this.persistence));
         this.accountAdapter.notifyDataSetChanged();
     }
-
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (resultCode) {
-//            case RESULT_OK:
-//                this.accountAdapter.update(Account.getAll(this.persistence));
-//                this.accountAdapter.notifyDataSetChanged();
-//                break;
-//            case RESULT_CANCELED:
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, view, menuInfo);
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.account_item_menu, menu);
-//    }
-
-//    @Override
-//    public boolean onContextItemSelected(MenuItem item) {
-//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//        switch (item.getItemId()) {
-//            case R.id.remove_account:
-//                if (menuInfo.id == Account.DEFAULT_ACCOUNT_ID) {
-//                    UIHelper.showMessage(findViewById(R.id.account_list), "Default account can't be deleted.");
-//                    return true;
-//                }
-//                Account.delete(this.persistence, (int) menuInfo.id);
-//                this.accountAdapter.update(Account.getAll(this.persistence));
-//                this.accountAdapter.notifyDataSetChanged();
-//                return true;
-//        }
-//        return false;
-//    }
 
     SQLitePersistence getPersistence() {
         return this.persistence;
