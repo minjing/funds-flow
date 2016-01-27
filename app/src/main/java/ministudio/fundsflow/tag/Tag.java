@@ -2,14 +2,8 @@ package ministudio.fundsflow.tag;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 
 import com.google.common.base.Strings;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import ministudio.fundsflow.ArgumentValidator;
 import ministudio.fundsflow.DomainHelper;

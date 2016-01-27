@@ -25,7 +25,6 @@ import com.google.common.base.Strings;
 
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.UIHelper;
-import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by min on 16/1/24.
@@ -189,7 +188,11 @@ final class TagEditor {
         }
 
         void select(int pos) {
-            this._selectedPos = pos;
+            if (this._selectedPos == pos) {
+                this._selectedPos = -1;
+            } else {
+                this._selectedPos = pos;
+            }
         }
 
         void select(TagCategory tagCategory) {

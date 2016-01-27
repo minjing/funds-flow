@@ -11,7 +11,6 @@ import android.view.View;
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.SQLitePersistence;
 import ministudio.fundsflow.ViewPagerAdapter;
-import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by xquan on 1/19/2016.

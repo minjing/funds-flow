@@ -1,6 +1,5 @@
 package ministudio.fundsflow.tag;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -138,9 +137,11 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
             holder._labTagName.setText(this._tags[position].getName());
             TagCategory tagCat = this._tags[position].getCategory();
             if (tagCat != null) {
+                holder._labTagCat.setVisibility(View.VISIBLE);
                 holder._labTagCat.setText(tagCat.getName());
             } else {
-                holder._labTagCat.setText("");
+                holder._labTagCat.setVisibility(View.INVISIBLE);
+                holder._labTagCat.setText(null);
             }
             return convertView;
         }

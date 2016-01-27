@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Strings;
 
+import ministudio.fundsflow.ArgumentValidator;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
@@ -68,30 +69,42 @@ public class Account implements Domain {
      * Static methods for finding and deleting functionality *
      *********************************************************/
     public static Account findById(SQLitePersistence persistence, int accountId) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - db");
-        }
+        ArgumentValidator.checkNull(persistence, "persistence");
         return persistence.findById(TAB_NAME, accountId, creator);
     }
 
-    public static Account[] getAll(SQLitePersistence persistence) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - db");
+    public static Account findByName(SQLitePersistence persistence, String name) {
+        ArgumentValidator.checkNull(persistence, "persistence");
+        ArgumentValidator.checkBlank(name, "name");
+        String stmt = "select * from " + TAB_NAME + " where " + COL_NAME + " = ?";
+        SQLiteDatabase db = persistence.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(stmt, new String[] { name });
+            if (cursor.moveToFirst()) {
+                return creator.create(persistence, cursor);
+            } else {
+                return null;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+    }
+
+    public static Account[] getAll(SQLitePersistence persistence) {
+        ArgumentValidator.checkNull(persistence, "persistence");
         return persistence.findAll(TAB_NAME, creator);
     }
 
     public static void delete(SQLitePersistence persistence, int accountId) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - persistence");
-        }
+        ArgumentValidator.checkNull(persistence, "persistence");
         persistence.delete(TAB_NAME, accountId);
     }
 
     public static boolean isAccountExist(SQLitePersistence persistence, String accountName) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - persistence");
-        }
+        ArgumentValidator.checkNull(persistence, "persistence");
         SQLiteDatabase db = persistence.getReadableDatabase();
         String stmt = "select id, name from account where name = ?";
         Cursor cursor = db.rawQuery(stmt, new String[] { accountName });
@@ -115,9 +128,7 @@ public class Account implements Domain {
     }
 
     public Account(SQLitePersistence persistence, int id, String name) {
-        if (persistence == null) {
-            throw new IllegalArgumentException("The argument is required - db");
-        }
+        ArgumentValidator.checkNull(persistence, "persistence");
         if (Strings.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("The argument is required - name");
         }

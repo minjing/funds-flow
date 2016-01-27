@@ -23,6 +23,7 @@ import android.widget.TextView;
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.SQLitePersistence;
 import ministudio.fundsflow.UIHelper;
+import ministudio.fundsflow.domain.Domain;
 
 public class AccountActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -53,9 +54,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                Intent intent = new Intent(getApplicationContext(), AccountAddActivity.class);
-                intent.putExtra(AccountAddActivity.ARG_ACCOUNT_ID, id);
-                startActivityForResult(intent, RESULT_CANCELED);
+                new AccountEditor().createUI(AccountActivity.this, (int) id);
             }
         });
 
@@ -63,8 +62,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AccountAddActivity.class);
-                startActivityForResult(intent, RESULT_CANCELED);
+                new AccountEditor().createUI(AccountActivity.this, Domain.UNDEFINED_ID);
             }
         });
 
@@ -124,6 +122,15 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
                 return true;
         }
         return false;
+    }
+
+    SQLitePersistence getPersistence() {
+        return this.persistence;
+    }
+
+    void updateAccountList() {
+        this.accountAdapter.update(Account.getAll(persistence));
+        this.accountAdapter.notifyDataSetChanged();
     }
 
     private static final class AccountAdapter extends BaseAdapter {
