@@ -107,11 +107,14 @@ public class Account implements Domain {
         ArgumentValidator.checkNull(persistence, "persistence");
         SQLiteDatabase db = persistence.getReadableDatabase();
         String stmt = "select id, name from account where name = ?";
-        Cursor cursor = db.rawQuery(stmt, new String[] { accountName });
-        if (cursor.moveToFirst()) {
-            return true;
-        } else {
-            return false;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(stmt, new String[]{accountName});
+            return cursor.moveToFirst();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 

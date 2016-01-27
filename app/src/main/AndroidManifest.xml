@@ -25,11 +25,6 @@
             android:label="@string/title_activity_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".account.AccountAddActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_account_add"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".tag.TagActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_tag"

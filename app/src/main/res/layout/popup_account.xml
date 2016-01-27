@@ -26,22 +26,22 @@
         android:layout_marginStart="16dp" />
 
     <Button
-        android:id="@+id/btn_save_tag"
+        android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below ="@id/txt_account_name"
         android:text="@string/label_save"/>
 
     <Button
-        android:id="@+id/btn_del_tag"
+        android:id="@+id/btn_del"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below ="@id/txt_account_name"
-        android:layout_toEndOf="@id/btn_save_tag"
+        android:layout_toEndOf="@id/btn_save"
         android:text="@string/label_delete"/>
 
     <Button
-        android:id="@+id/btn_cancel_tag"
+        android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below ="@id/txt_account_name"

@@ -19,7 +19,7 @@
 
     <string name="title_activity_account">Account List</string>
     <string name="title_activity_account_add">Add Account</string>
-    <string name="message_account_name_empty">The account name can't be empty</string>
+    <string name="message_account_name_empty">The account name can\'t be empty</string>
     <string name="message_account_name_used">Tha account name is used</string>
 
     <string name="title_activity_tag">Tag List</string>

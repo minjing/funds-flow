@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import ministudio.fundsflow.R;
@@ -32,8 +31,6 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
 
     private SQLitePersistence persistence;
     private AccountAdapter accountAdapter;
-
-    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                new AccountEditor().createUI(AccountActivity.this, (int) id);
+                new AccountEditor().createUI(AccountActivity.this, (Account) AccountActivity.this.accountAdapter.getItem(pos));
             }
         });
 
@@ -62,11 +59,11 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AccountEditor().createUI(AccountActivity.this, Domain.UNDEFINED_ID);
+                new AccountEditor().createUI(AccountActivity.this, null);
             }
         });
 
-        registerForContextMenu(this.accountListView);
+//        registerForContextMenu(this.accountListView);
     }
 
     @Override
@@ -87,42 +84,42 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
         this.accountAdapter.notifyDataSetChanged();
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
-            case RESULT_OK:
-                this.accountAdapter.update(Account.getAll(this.persistence));
-                this.accountAdapter.notifyDataSetChanged();
-                break;
-            case RESULT_CANCELED:
-                break;
-            default:
-                break;
-        }
-    }
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch (resultCode) {
+//            case RESULT_OK:
+//                this.accountAdapter.update(Account.getAll(this.persistence));
+//                this.accountAdapter.notifyDataSetChanged();
+//                break;
+//            case RESULT_CANCELED:
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, view, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.account_item_menu, menu);
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, view, menuInfo);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.account_item_menu, menu);
+//    }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()) {
-            case R.id.remove_account:
-                if (menuInfo.id == Account.DEFAULT_ACCOUNT_ID) {
-                    UIHelper.showMessage(findViewById(R.id.account_list), "Default account can't be deleted.");
-                    return true;
-                }
-                Account.delete(this.persistence, (int) menuInfo.id);
-                this.accountAdapter.update(Account.getAll(this.persistence));
-                this.accountAdapter.notifyDataSetChanged();
-                return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        switch (item.getItemId()) {
+//            case R.id.remove_account:
+//                if (menuInfo.id == Account.DEFAULT_ACCOUNT_ID) {
+//                    UIHelper.showMessage(findViewById(R.id.account_list), "Default account can't be deleted.");
+//                    return true;
+//                }
+//                Account.delete(this.persistence, (int) menuInfo.id);
+//                this.accountAdapter.update(Account.getAll(this.persistence));
+//                this.accountAdapter.notifyDataSetChanged();
+//                return true;
+//        }
+//        return false;
+//    }
 
     SQLitePersistence getPersistence() {
         return this.persistence;

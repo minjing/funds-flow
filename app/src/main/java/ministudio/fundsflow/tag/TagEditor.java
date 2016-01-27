@@ -115,7 +115,7 @@ final class TagEditor {
         View rootView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
         popupWin.showAtLocation(rootView, Gravity.CENTER, 0, 0);
 
-        Button btnSave = (Button) popupView.findViewById(R.id.btn_save_tag);
+        Button btnSave = (Button) popupView.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +151,7 @@ final class TagEditor {
                 activity.getCurrentFragment().updateTagList();
             }
         });
-        Button btnDelete = (Button) popupView.findViewById(R.id.btn_del_tag);
+        Button btnDelete = (Button) popupView.findViewById(R.id.btn_del);
         if (tag == null) {
             btnDelete.setEnabled(false);
         } else {
@@ -163,7 +163,7 @@ final class TagEditor {
                 }
             });
         }
-        Button btnCancel = (Button) popupView.findViewById(R.id.btn_cancel_tag);
+        Button btnCancel = (Button) popupView.findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

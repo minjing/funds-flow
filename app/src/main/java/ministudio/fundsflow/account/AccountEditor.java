@@ -20,7 +20,7 @@ import ministudio.fundsflow.domain.Domain;
  */
 final class AccountEditor {
 
-    void createUI(final AccountActivity activity, final int accountId) {
+    void createUI(final AccountActivity activity, final Account account) {
         final View popupView = activity.getLayoutInflater().inflate(R.layout.popup_account, null);
 
         final PopupWindow popupWin = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
@@ -30,6 +30,11 @@ final class AccountEditor {
         popupWin.setBackgroundDrawable(new ColorDrawable(0xeeeeee));
         View rootView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
         popupWin.showAtLocation(rootView, Gravity.CENTER, 0, 0);
+
+        EditText txtAccountName = (EditText) popupView.findViewById(R.id.txt_account_name);
+        if (account != null) {
+            txtAccountName.setText(account.getName());
+        }
 
         Button btnSave = (Button) popupView.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -41,42 +46,43 @@ final class AccountEditor {
                     UIHelper.showMessage(v, popupView.getResources().getString(R.string.message_account_name_empty));
                     return;
                 }
-                Account account = Account.findByName(activity.getPersistence(), newAccountName);
-                if (accountId == Domain.UNDEFINED_ID) {
+                Account newAccount = Account.findByName(activity.getPersistence(), newAccountName);
+                if (account == null) {
                     // create new account
-                    if (account != null) {
+                    if (newAccount != null) {
                         UIHelper.showMessage(v, popupView.getResources().getString(R.string.message_account_name_used));
                         return;
                     }
-                    account = new Account(activity.getPersistence(), newAccountName);
+                    newAccount = new Account(activity.getPersistence(), newAccountName);
                 } else {
                     // update existing account
-                    if (account != null && account.getId() != accountId) {
+                    if (newAccount != null && newAccount.getId() != account.getId()) {
                         UIHelper.showMessage(v, popupView.getResources().getString(R.string.message_account_name_used));
                         return;
                     }
-                    account.setName(newAccountName);
+                    newAccount = account;
+                    newAccount.setName(newAccountName);
                 }
-                account.save();
+                newAccount.save();
                 popupWin.dismiss();
                 activity.updateAccountList();
             }
         });
         Button btnDelete = (Button) popupView.findViewById(R.id.btn_del);
-        if (accountId == Domain.UNDEFINED_ID) {
+        if (account == null || account.getId() == Account.DEFAULT_ACCOUNT_ID) {
             btnDelete.setEnabled(false);
         } else {
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Account.delete(activity.getPersistence(), accountId);
+                    Account.delete(activity.getPersistence(), account.getId());
                     popupWin.dismiss();
                     activity.updateAccountList();
                 }
             });
         }
-        Button btnCancle = (Button) popupView.findViewById(R.id.btn_cancel);
-        btnCancle.setOnClickListener(new View.OnClickListener() {
+        Button btnCancel = (Button) popupView.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popupWin.dismiss();
