@@ -7,7 +7,7 @@ import com.google.common.base.Strings;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.domain.Domain;
+import ministudio.fundsflow.Domain;
 
 /**
  * Created by min on 16/1/17.

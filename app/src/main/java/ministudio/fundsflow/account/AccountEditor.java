@@ -13,7 +13,6 @@ import com.google.common.base.Strings;
 
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.UIHelper;
-import ministudio.fundsflow.domain.Domain;
 
 /**
  * Created by xquan on 1/27/2016.

@@ -20,10 +20,10 @@ Basic Version Feature List
     -   [x] Delete Account
         -   [x] A Default Account can't be Deleted
 1.  Tag Management
-    -   [ ] Tag only contains its name
-    -   [ ] Create / Modify / Delete Tag
+    -   [x] Tag only contains its name
+    -   [x] Create / Modify / Delete Tag
     -   [ ] Tag Category
-        -   [ ] Tag Category is associate with Tag Type
+        -   [x] Tag Category is associate with Tag Type
         -   [ ] Tag Category create/modify/delete
     -   [x] Tag Type
         -   [x] Two types - Account Tag Type, Trading Tag Type

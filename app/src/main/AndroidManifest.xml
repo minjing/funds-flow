@@ -10,8 +10,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".OutlineActivity"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +21,18 @@
         </activity>
         <activity
             android:name=".account.AccountActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_account"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".tag.TagActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_tag"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".trading.TradingActivity"
+            android:label="@string/title_activity_trading"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

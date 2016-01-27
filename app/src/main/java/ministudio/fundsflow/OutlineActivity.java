@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import ministudio.fundsflow.account.AccountActivity;
 import ministudio.fundsflow.tag.TagActivity;
+import ministudio.fundsflow.trading.TradingActivity;
 
 public class OutlineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,23 +87,27 @@ public class OutlineActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_outline:
-                // Open outline activate
+                // Open outline activity
                 startActivity(new Intent(getApplicationContext(), OutlineActivity.class));
                 break;
+            case R.id.nav_trading:
+                // Open trading activity
+                startActivity(new Intent(getApplicationContext(), TradingActivity.class));
+                break;
             case R.id.nav_account:
-                // Open account management activate
+                // Open account management activity
                 startActivity(new Intent(getApplicationContext(), AccountActivity.class));
                 break;
             case R.id.nav_tag:
-                // Open tag management activate
+                // Open tag management activity
                 startActivity(new Intent(getApplicationContext(), TagActivity.class));
                 break;
             case R.id.nav_budget:
-                // Open budget activate
+                // Open budget activity
                 Snackbar.make(this.findViewById(R.id.nav_view), "Open Budget Activate", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_statistic:
-                // Open statistic activate
+                // Open statistic activity
                 Snackbar.make(this.findViewById(R.id.nav_view), "Open Statistic Activate", Snackbar.LENGTH_LONG).show();
                 break;
             case R.id.nav_settings:

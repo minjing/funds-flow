@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ministudio.fundsflow.domain.Domain;
-
 /**
  * Created by min on 16/1/23.
  */

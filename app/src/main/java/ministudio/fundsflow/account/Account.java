@@ -9,7 +9,7 @@ import ministudio.fundsflow.ArgumentValidator;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.domain.Domain;
+import ministudio.fundsflow.Domain;
 
 /**
  * Created by min on 15/12/25.

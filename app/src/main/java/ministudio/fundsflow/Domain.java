@@ -1,4 +1,4 @@
-package ministudio.fundsflow.domain;
+package ministudio.fundsflow;
 
 /**
  * Created by min on 16/1/17.
