@@ -160,6 +160,7 @@ final class TagEditor {
                 public void onClick(View v) {
                     Tag.delete(activity.getPersistence(), tag.getId());
                     activity.getCurrentFragment().updateTagList();
+                    popupWin.dismiss();
                 }
             });
         }
@@ -235,7 +236,7 @@ final class TagEditor {
             Holder holder;
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(this._ctx);
-                convertView = inflater.inflate(R.layout.tag_cat_list, null);
+                convertView = inflater.inflate(R.layout.list_tag_cat, null);
                 holder = new Holder();
                 holder._labTagCatName = (TextView) convertView.findViewById(R.id.tag_cat_name);
                 holder._imgTagCat = (ImageView) convertView.findViewById(R.id.item_selection);

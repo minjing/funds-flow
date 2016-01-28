@@ -126,7 +126,7 @@ public class TagFragment extends Fragment implements SwipeRefreshLayout.OnRefres
             Holder holder;
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(this._ctx);
-                convertView = inflater.inflate(R.layout.tag_list, null);
+                convertView = inflater.inflate(R.layout.list_tag, null);
                 holder = new Holder();
                 holder._labTagName = (TextView) convertView.findViewById(R.id.tag_name);
                 holder._labTagCat = (TextView) convertView.findViewById(R.id.tag_cat_name);

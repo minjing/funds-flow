@@ -118,7 +118,7 @@ public class AccountActivity extends AppCompatActivity implements SwipeRefreshLa
             Holder holder;
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(this.ctx);
-                convertView = inflater.inflate(R.layout.account_list, null);
+                convertView = inflater.inflate(R.layout.list_account, null);
                 holder = new Holder();
                 holder.labelAccountName = (TextView) convertView.findViewById(R.id.account_name);
                 convertView.setTag(holder);

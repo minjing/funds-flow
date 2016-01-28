@@ -32,7 +32,7 @@
         <activity
             android:name=".trading.TradingActivity"
             android:label="@string/title_activity_trading"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
