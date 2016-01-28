@@ -7,20 +7,20 @@ import com.google.common.base.Strings;
 
 import ministudio.fundsflow.ArgumentValidator;
 import ministudio.fundsflow.DomainHelper;
+import ministudio.fundsflow.IDomain;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.Domain;
 
 /**
  * Created by min on 15/12/25.
  */
-public class Tag implements Domain {
+public class Tag implements IDomain {
 
-    private static final String TAB_NAME    = "tag";
-    private static final String COL_TYPE_ID = "type_id";
-    private static final String COL_CAT_ID  = "cat_id";
-    private static final String COL_NAME    = "name";
+    public static final String TAB_NAME     = "tag";
+    public static final String COL_TYPE_ID  = "type_id";
+    public static final String COL_CAT_ID   = "cat_id";
+    public static final String COL_NAME     = "name";
 
     /*********************
      * Table Initializer *
@@ -49,7 +49,7 @@ public class Tag implements Domain {
         }
     }
 
-    private static final TagCreator creator = new TagCreator();
+    public static final TagCreator creator = new TagCreator();
 
     private static final class TagCreator implements IDomainCreator<Tag> {
 
@@ -129,7 +129,7 @@ public class Tag implements Domain {
     }
 
     /*************************************
-     * Domain related fields and methods *
+     * IDomain related fields and methods *
      *************************************/
     private final SQLitePersistence _persistence;
 

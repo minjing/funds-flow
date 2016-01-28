@@ -4,15 +4,15 @@ import android.database.Cursor;
 
 import com.google.common.base.Strings;
 
+import ministudio.fundsflow.IDomain;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.Domain;
 
 /**
  * Created by min on 16/1/17.
  */
-public class TagType implements Domain {
+public class TagType implements IDomain {
 
     private static final String TAB_NAME    = "tag_type";
     private static final String COL_RES_KEY = "res_key";
@@ -84,7 +84,7 @@ public class TagType implements Domain {
     }
 
     /*************************************
-     * Domain related fields and methods *
+     * IDomain related fields and methods *
      *************************************/
     private final SQLitePersistence _persistence;
     private int _id;

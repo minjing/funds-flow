@@ -9,12 +9,12 @@ import ministudio.fundsflow.ArgumentValidator;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.Domain;
+import ministudio.fundsflow.IDomain;
 
 /**
  * Created by min on 15/12/25.
  */
-public class Account implements Domain {
+public class Account implements IDomain {
 
     private static final String TAB_NAME    = "account";
     private static final String COL_NAME    = "name";
@@ -44,7 +44,7 @@ public class Account implements Domain {
 
         @Override
         public String[] getUpgradeStatement(int oldVersion, int newVersion) {
-            return new String[] { STMT_DROP_TABLE, STMT_CREATE_TABLE };
+            return new String[] { STMT_DROP_TABLE };
         }
     }
 

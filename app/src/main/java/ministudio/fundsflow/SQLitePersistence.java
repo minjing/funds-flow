@@ -18,6 +18,9 @@ import ministudio.fundsflow.account.Account;
 import ministudio.fundsflow.tag.Tag;
 import ministudio.fundsflow.tag.TagCategory;
 import ministudio.fundsflow.tag.TagType;
+import ministudio.fundsflow.trading.Trading;
+import ministudio.fundsflow.trading.TradingTag;
+import ministudio.fundsflow.trading.TradingType;
 
 /**
  * Created by min on 15/12/25.
@@ -26,16 +29,16 @@ public class SQLitePersistence extends SQLiteOpenHelper {
 
     private static final String dbName  = "fundsflow.db";
     private static final int dbVersion  = 1;
-    private static final IPersistenceInitializer[] persistenceInitializers;
-
-    static {
-        persistenceInitializers = new IPersistenceInitializer[] {
+    private static final IPersistenceInitializer[] persistenceInitializers =
+            new IPersistenceInitializer[] {
                 Account.initializer,
                 TagType.initializer,
                 TagCategory.initializer,
-                Tag.initializer
-        };
-    }
+                Tag.initializer,
+                TradingType.initializer,
+                Trading.initializer,
+                TradingTag.initializer
+            };
 
     private SQLiteDatabase _readableDb;
     private SQLiteDatabase _writableDb;
@@ -106,7 +109,7 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         this._writableDb = null;
     }
 
-    public <T extends Domain> T findById(String tableName, int id, IDomainCreator<T> creator) {
+    public <T extends IDomain> T findById(String tableName, int id, IDomainCreator<T> creator) {
         if (Strings.isNullOrEmpty(tableName)) {
             throw new IllegalArgumentException("The argument is required - tableName");
         }
@@ -124,7 +127,7 @@ public class SQLitePersistence extends SQLiteOpenHelper {
         return domain;
     }
 
-    public <T extends Domain> T[] findAll(String tableName, IDomainCreator<T> creator) {
+    public <T extends IDomain> T[] findAll(String tableName, IDomainCreator<T> creator) {
         if (Strings.isNullOrEmpty(tableName)) {
             throw new IllegalArgumentException("The argument is required - tableName");
         }
@@ -156,7 +159,7 @@ public class SQLitePersistence extends SQLiteOpenHelper {
 
     public void delete(String tableName, int id) {
         SQLiteDatabase db = getWritableDatabase();
-        String stmt = "delete from " + tableName + " where " + Domain.COL_ID + " = ?";
+        String stmt = "delete from " + tableName + " where " + IDomain.COL_ID + " = ?";
         db.execSQL(stmt, new Object[]{id});
     }
 }

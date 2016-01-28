@@ -14,7 +14,11 @@ public final class DomainHelper {
 
     private DomainHelper() { }
 
-    public static <T extends Domain> T[] createDomains(SQLitePersistence persistence, Cursor cursor, IDomainCreator<T> creator) {
+    public static String generateDropTableSql(String tableName) {
+        return "drop table if exist " + tableName;
+    }
+
+    public static <T extends IDomain> T[] createDomains(SQLitePersistence persistence, Cursor cursor, IDomainCreator<T> creator) {
         List<T> tagCats;
         if (cursor.moveToFirst()) {
             tagCats = new ArrayList<>();

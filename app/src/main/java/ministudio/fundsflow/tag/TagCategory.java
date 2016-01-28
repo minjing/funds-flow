@@ -8,12 +8,12 @@ import ministudio.fundsflow.DomainHelper;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
 import ministudio.fundsflow.SQLitePersistence;
-import ministudio.fundsflow.Domain;
+import ministudio.fundsflow.IDomain;
 
 /**
  * Created by min on 16/1/18.
  */
-public class TagCategory implements Domain {
+public class TagCategory implements IDomain {
 
     private static final String TAB_NAME    = "tag_category";
     private static final String COL_NAME    = "name";
@@ -121,7 +121,7 @@ public class TagCategory implements Domain {
     }
 
     /*************************************
-     * Domain related fields and methods *
+     * IDomain related fields and methods *
      *************************************/
     private final SQLitePersistence _persistence;
     private int _id = UNDEFINED_ID;
