@@ -12,4 +12,16 @@
     tools:context="ministudio.fundsflow.trading.TradingActivity"
     tools:showIn="@layout/activity_trading">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/layout_trading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_trading_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

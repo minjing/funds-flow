@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tag_name"
+        android:id="@+id/lab_tag_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -15,10 +15,10 @@
         android:text="@string/placeholder"/>
 
     <TextView
-        android:id="@+id/tag_cat_name"
+        android:id="@+id/lab_tag_cat_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/tag_name"
+        android:layout_alignBaseline="@id/lab_tag_name"
         android:layout_alignParentEnd="true"
         android:padding="2dp"
         android:background="@drawable/tag_cat"
