@@ -61,7 +61,7 @@ public class Trading implements IDomain {
 
         @Override
         public Class getDomainClass() {
-            return TradingTag.class;
+            return Trading.class;
         }
 
         @Override
