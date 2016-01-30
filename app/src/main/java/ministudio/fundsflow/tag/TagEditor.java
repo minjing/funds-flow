@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.google.common.base.Strings;
 
 import ministudio.fundsflow.R;
-import ministudio.fundsflow.UIHelper;
+import ministudio.fundsflow.helper.UIHelper;
 
 /**
  * Created by min on 16/1/24.

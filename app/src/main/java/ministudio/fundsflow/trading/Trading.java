@@ -2,8 +2,8 @@ package ministudio.fundsflow.trading;
 
 import android.database.Cursor;
 
-import ministudio.fundsflow.ArgumentValidator;
-import ministudio.fundsflow.DomainHelper;
+import ministudio.fundsflow.helper.ArgumentValidator;
+import ministudio.fundsflow.helper.DomainHelper;
 import ministudio.fundsflow.IDomain;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
@@ -39,11 +39,15 @@ public class Trading implements IDomain {
                         COL_OUT_ACCOUNT_ID + " integer not null, " +
                         COL_AMOUNT + " float not null" +
                         ")";
+        private static final String STMT_TEST_DATA =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.2, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1)";
         private static final String STMT_DROP_TABLE = DomainHelper.generateDropTableSql(TAB_NAME);
 
         @Override
         public String[] getCreateStatement() {
-            return new String[] { STMT_CREATE_TABLE };
+            return new String[] { STMT_CREATE_TABLE, STMT_TEST_DATA };
         }
 
         @Override

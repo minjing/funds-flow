@@ -1,4 +1,4 @@
-package ministudio.fundsflow;
+package ministudio.fundsflow.helper;
 
 import android.support.design.widget.Snackbar;
 import android.view.View;

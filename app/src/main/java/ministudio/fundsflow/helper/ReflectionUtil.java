@@ -1,4 +1,4 @@
-package ministudio.fundsflow;
+package ministudio.fundsflow.helper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

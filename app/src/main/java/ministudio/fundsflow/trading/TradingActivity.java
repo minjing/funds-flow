@@ -17,9 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import ministudio.fundsflow.ArgumentValidator;
+import ministudio.fundsflow.helper.ArgumentValidator;
 import ministudio.fundsflow.R;
 import ministudio.fundsflow.SQLitePersistence;
+import ministudio.fundsflow.helper.DateTimeHelper;
 
 public class TradingActivity extends AppCompatActivity {
 
@@ -80,7 +81,7 @@ public class TradingActivity extends AppCompatActivity {
             if (holder instanceof TradingHeaderHolder) {
                 TradingHeaderHolder headerHolder = (TradingHeaderHolder) holder;
                 Date date = new Date(trading.getTime());
-                headerHolder._labTradingHeader.setText(FriendlyDate(date));
+                headerHolder._labTradingHeader.setText(DateTimeHelper.getSweetDate(TradingActivity.this, date));
             }
             holder._labAmount.setText(Float.toString(trading.getAmount()));
         }
@@ -95,7 +96,7 @@ public class TradingActivity extends AppCompatActivity {
             if (position == 0) {
                 return TYPE_HEADER;
             }
-            if (isSameDate(this._tradings[position].getTime(), this._tradings[position - 1].getTime())) {
+            if (DateTimeHelper.isSameDate(this._tradings[position].getTime(), this._tradings[position - 1].getTime())) {
                 return TYPE_NORMAL;
             } else {
                 return TYPE_HEADER;
@@ -128,44 +129,29 @@ public class TradingActivity extends AppCompatActivity {
         }
     }
 
-    public static int daysOfTwo(Date originalDate, Date compareDateDate) {
-        Calendar aCalendar = Calendar.getInstance();
-        aCalendar.setTime(originalDate);
-        int originalDay = aCalendar.get(Calendar.DAY_OF_YEAR);
-        aCalendar.setTime(compareDateDate);
-        int compareDay = aCalendar.get(Calendar.DAY_OF_YEAR);
+//    public static int daysOfTwo(Date originalDate, Date compareDateDate) {
+//        Calendar aCalendar = Calendar.getInstance();
+//        aCalendar.setTime(originalDate);
+//        int originalDay = aCalendar.get(Calendar.DAY_OF_YEAR);
+//        aCalendar.setTime(compareDateDate);
+//        int compareDay = aCalendar.get(Calendar.DAY_OF_YEAR);
+//
+//        return originalDay - compareDay;
+//    }
 
-        return originalDay - compareDay;
-    }
 
-    public static boolean isSameDate(long time1, long time2) {
-        Calendar c1 = Calendar.getInstance();
-        c1.setTimeInMillis(time1);
-        Calendar c2 = Calendar.getInstance();
-        c2.setTimeInMillis(time2);
-        if (c1.get(Calendar.YEAR) != c2.get(Calendar.YEAR)) {
-            return false;
-        }
-        if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
-            return false;
-        }
-        if (c1.get(Calendar.DAY_OF_MONTH) != c2.get(Calendar.DAY_OF_MONTH)) {
-            return false;
-        }
-        return true;
-    }
 
-    public static String FriendlyDate(Date compareDate) {
-        Date nowDate = new Date();
-        int dayDiff = daysOfTwo(nowDate, compareDate);
-
-        if (dayDiff <= 0)
-            return "今日";
-        else if (dayDiff == 1)
-            return "昨日";
-        else if (dayDiff == 2)
-            return "前日";
-        else
-            return new SimpleDateFormat("M月d日 E").format(compareDate);
-    }
+//    public static String FriendlyDate(Date compareDate) {
+//        Date nowDate = new Date();
+//        int dayDiff = daysOfTwo(nowDate, compareDate);
+//
+//        if (dayDiff <= 0)
+//            return "今日";
+//        else if (dayDiff == 1)
+//            return "昨日";
+//        else if (dayDiff == 2)
+//            return "前日";
+//        else
+//            return new SimpleDateFormat("M月d日 E").format(compareDate);
+//    }
 }

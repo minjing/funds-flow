@@ -1,4 +1,4 @@
-package ministudio.fundsflow;
+package ministudio.fundsflow.helper;
 
 import com.google.common.base.Strings;
 

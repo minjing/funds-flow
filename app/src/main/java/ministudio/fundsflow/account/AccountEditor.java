@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 import com.google.common.base.Strings;
 
 import ministudio.fundsflow.R;
-import ministudio.fundsflow.UIHelper;
+import ministudio.fundsflow.helper.UIHelper;
 
 /**
  * Created by xquan on 1/27/2016.

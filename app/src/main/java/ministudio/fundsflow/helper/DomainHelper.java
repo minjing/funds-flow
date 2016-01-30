@@ -1,4 +1,4 @@
-package ministudio.fundsflow;
+package ministudio.fundsflow.helper;
 
 import android.database.Cursor;
 
@@ -6,6 +6,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import ministudio.fundsflow.IDomain;
+import ministudio.fundsflow.IDomainCreator;
+import ministudio.fundsflow.SQLitePersistence;
 
 /**
  * Created by min on 16/1/23.

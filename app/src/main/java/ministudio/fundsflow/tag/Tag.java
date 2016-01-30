@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.google.common.base.Strings;
 
-import ministudio.fundsflow.ArgumentValidator;
-import ministudio.fundsflow.DomainHelper;
+import ministudio.fundsflow.helper.ArgumentValidator;
+import ministudio.fundsflow.helper.DomainHelper;
 import ministudio.fundsflow.IDomain;
 import ministudio.fundsflow.IDomainCreator;
 import ministudio.fundsflow.IPersistenceInitializer;
