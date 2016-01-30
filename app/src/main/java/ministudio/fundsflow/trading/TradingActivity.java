@@ -1,5 +1,6 @@
 package ministudio.fundsflow.trading;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import ministudio.fundsflow.helper.ArgumentValidator;
@@ -47,8 +46,7 @@ public class TradingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(getApplicationContext(), TradingEditorActivity.class));
             }
         });
     }
@@ -128,30 +126,4 @@ public class TradingActivity extends AppCompatActivity {
             this._labTradingHeader = (TextView) itemView.findViewById(R.id.lab_trading_header);
         }
     }
-
-//    public static int daysOfTwo(Date originalDate, Date compareDateDate) {
-//        Calendar aCalendar = Calendar.getInstance();
-//        aCalendar.setTime(originalDate);
-//        int originalDay = aCalendar.get(Calendar.DAY_OF_YEAR);
-//        aCalendar.setTime(compareDateDate);
-//        int compareDay = aCalendar.get(Calendar.DAY_OF_YEAR);
-//
-//        return originalDay - compareDay;
-//    }
-
-
-
-//    public static String FriendlyDate(Date compareDate) {
-//        Date nowDate = new Date();
-//        int dayDiff = daysOfTwo(nowDate, compareDate);
-//
-//        if (dayDiff <= 0)
-//            return "今日";
-//        else if (dayDiff == 1)
-//            return "昨日";
-//        else if (dayDiff == 2)
-//            return "前日";
-//        else
-//            return new SimpleDateFormat("M月d日 E").format(compareDate);
-//    }
 }

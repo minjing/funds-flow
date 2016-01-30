@@ -33,6 +33,11 @@
             android:name=".trading.TradingActivity"
             android:label="@string/title_activity_trading"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".trading.TradingEditorActivity"
+            android:label="@string/title_activity_trading_editor"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

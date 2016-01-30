@@ -17,7 +17,7 @@ public final class DateTimeHelper {
 
     private static final String FMT_DEFAULT_DATE    = "yyyy/MM/dd";
     private static final String FMT_TIME24          = "HH:mm";
-    private static final String FMT_TIME12          = "tt hh:mm";
+    private static final String FMT_TIME12          = "a hh:mm";
 
     private DateTimeHelper() { }
 
