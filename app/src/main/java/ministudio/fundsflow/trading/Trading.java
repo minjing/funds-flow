@@ -39,15 +39,51 @@ public class Trading implements IDomain {
                         COL_OUT_ACCOUNT_ID + " integer not null, " +
                         COL_AMOUNT + " float not null" +
                         ")";
-        private static final String STMT_TEST_DATA =
+        private static final String STMT_TEST_DATA1 =
                 "insert into " + TAB_NAME +
                         "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
-                        "values (12.2, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1)";
+                        "values (12.1, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA2 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.2, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA3 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.3, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA4 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.4, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA5 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.5, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA6 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.6, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA7 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.7, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA8 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.8, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA9 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.9, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
+        private static final String STMT_TEST_DATA10 =
+                "insert into " + TAB_NAME +
+                        "(" + COL_AMOUNT + ", " + COL_TIME + ", " + COL_TYPE_ID + ", " + COL_IN_ACCOUNT_ID + ", " + COL_OUT_ACCOUNT_ID + ") " +
+                        "values (12.10, " + System.currentTimeMillis() + ", " + TradingType.ID_INCOME + ", 1, 1);";
         private static final String STMT_DROP_TABLE = DomainHelper.generateDropTableSql(TAB_NAME);
 
         @Override
         public String[] getCreateStatement() {
-            return new String[] { STMT_CREATE_TABLE, STMT_TEST_DATA };
+            return new String[] { STMT_CREATE_TABLE, STMT_TEST_DATA1, STMT_TEST_DATA2, STMT_TEST_DATA3, STMT_TEST_DATA4, STMT_TEST_DATA5, STMT_TEST_DATA6, STMT_TEST_DATA7, STMT_TEST_DATA8, STMT_TEST_DATA9, STMT_TEST_DATA10 };
         }
 
         @Override
